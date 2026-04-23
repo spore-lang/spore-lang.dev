@@ -15,5 +15,5 @@ title: "关于"
 
 - 主站：`spore-lang.dev`
 - 文档：`docs.spore-lang.dev`
-- [语言仓库](https://github.com/spore-lang/spore)
-- [站点仓库](https://github.com/spore-lang/spore-lang.dev)
+- 语言仓库：`spore-lang/spore`
+- 站点仓库：`spore-lang/spore-lang.dev`

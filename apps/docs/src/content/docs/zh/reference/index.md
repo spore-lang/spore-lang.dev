@@ -9,9 +9,9 @@ sidebar:
 
 ## 主要来源
 
-- [Spore README](https://github.com/spore-lang/spore/blob/main/README.md)
-- [Spore 设计概览](https://github.com/spore-lang/spore/blob/main/docs/DESIGN.md)
-- [Spore specs 目录](https://github.com/spore-lang/spore/tree/main/docs/specs)
-- [Spore evolution 路线图](https://github.com/spore-lang/spore-evolution/blob/main/ROADMAP.md)
+- `spore-lang/spore` 中的 `README.md`
+- `spore-lang/spore` 中的 `docs/DESIGN.md`
+- `spore-lang/spore-evolution` 中的 `ROADMAP.md`
+- `spore-lang/spore-evolution` 中的 `seps/`
 
 随着文档站成熟，关键参考内容会逐步迁移到这里，并以更适合网页阅读的形式呈现。
