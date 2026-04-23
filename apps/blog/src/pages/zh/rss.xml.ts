@@ -4,7 +4,7 @@ import { getBlogCopy, localizePath, type BlogLocale } from "@/i18n/blog";
 import { getPath } from "@/utils/getPath";
 import { getPublishedPostsForLocale } from "@/utils/getLocalePosts";
 
-const ROUTE_LOCALE: BlogLocale = "en";
+const ROUTE_LOCALE: BlogLocale = "zh";
 
 export async function GET() {
   const copy = getBlogCopy(ROUTE_LOCALE);

@@ -1,13 +1,13 @@
 import type { CollectionEntry } from "astro:content";
 import { BLOG_PATH } from "@/content.config";
 import {
-  DEFAULT_BLOG_LOCALE,
   isBlogLocale,
   type BlogLocale,
 } from "@/i18n/blog";
 import { slugifyStr } from "./slugify";
 
 type BlogPost = CollectionEntry<"blog">;
+const DEFAULT_POST_LOCALE: BlogLocale = "zh";
 
 function getBlogFileSegments(filePath?: string) {
   return (filePath ?? "")
@@ -26,7 +26,7 @@ export function getPostLocaleFromFilePath(filePath?: string): BlogLocale {
   const [firstSegment] = getBlogFileSegments(filePath);
   return firstSegment && isBlogLocale(firstSegment)
     ? firstSegment
-    : DEFAULT_BLOG_LOCALE;
+    : DEFAULT_POST_LOCALE;
 }
 
 export function getPostLocale(post: Pick<BlogPost, "filePath">): BlogLocale {

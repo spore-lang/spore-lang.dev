@@ -7,7 +7,7 @@ import { generateOgImageForPost } from "@/utils/generateOgImages";
 import postFilter from "@/utils/postFilter";
 import { SITE } from "@/config";
 
-const ROUTE_LOCALE: BlogLocale = "en";
+const ROUTE_LOCALE: BlogLocale = "zh";
 
 export async function getStaticPaths() {
   if (!SITE.dynamicOgImage) {

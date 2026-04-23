@@ -19,8 +19,8 @@ type Props = {
 };
 
 export async function getStaticPaths() {
-  const posts = await getPublishedPostsForLocale("en");
-  return buildPaginatedPaths(posts, SITE.postPerPage, "/posts");
+  const posts = await getPublishedPostsForLocale("zh");
+  return buildPaginatedPaths(posts, SITE.postPerPage, "/zh/posts");
 }
 
 const { page } = Astro.props as Props;

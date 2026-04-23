@@ -15,7 +15,7 @@ import getUniqueTags from "@/utils/getUniqueTags";
 import getPostsByTag from "@/utils/getPostsByTag";
 import { getPublishedPostsForLocale } from "@/utils/getLocalePosts";
 import { buildPaginatedPaths, type PaginationPage } from "@/utils/pagination";
-const BASE_PATH = "/tags";
+const BASE_PATH = "/zh/tags";
 
 type Props = {
   page: PaginationPage<CollectionEntry<"blog">>;
@@ -23,7 +23,7 @@ type Props = {
 };
 
 export async function getStaticPaths() {
-  const posts = await getPublishedPostsForLocale("en");
+  const posts = await getPublishedPostsForLocale("zh");
   const tags = getUniqueTags(posts);
 
   return tags.flatMap(({ tag, tagName }) =>
