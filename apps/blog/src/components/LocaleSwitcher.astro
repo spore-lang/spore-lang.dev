@@ -1,0 +1,71 @@
+---
+import {
+  BLOG_LOCALES,
+  getBlogCopy,
+  getBlogLocaleFromPathname,
+  getLocaleHrefLang,
+  switchLocalePath,
+  type BlogLocale,
+} from "@/i18n/blog";
+
+type Props = {
+  switchLinks?: Partial<Record<BlogLocale, string>>;
+};
+
+const { switchLinks } = Astro.props;
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+
+const defaultLinks = Object.fromEntries(
+  BLOG_LOCALES.map(targetLocale => [
+    targetLocale,
+    switchLocalePath(Astro.url.pathname, targetLocale),
+  ])
+) as Record<BlogLocale, string>;
+
+const resolvedLinks = { ...defaultLinks, ...switchLinks };
+---
+
+<div class="col-span-2 flex items-center justify-center gap-2 sm:col-span-1">
+  <span class="sr-only">{copy.languageSwitcher}</span>
+  {
+    BLOG_LOCALES.map(targetLocale => (
+      <a
+        href={resolvedLinks[targetLocale]}
+        lang={getLocaleHrefLang(targetLocale)}
+        hreflang={getLocaleHrefLang(targetLocale)}
+        data-blog-locale-link
+        data-locale={targetLocale}
+        class:list={[
+          "rounded border border-border px-2 py-1 text-sm font-medium transition",
+          "focus-outline hover:text-accent",
+          {
+            "bg-accent text-background hover:text-background":
+              targetLocale === locale,
+          },
+          { "opacity-80": targetLocale !== locale },
+        ]}
+      >
+        {copy.localeLabels[targetLocale]}
+      </a>
+    ))
+  }
+</div>
+
+<script is:inline>
+  function bindBlogLocaleLinks() {
+    document.querySelectorAll("[data-blog-locale-link]").forEach(link => {
+      if (link.dataset.bound === "true") return;
+      link.dataset.bound = "true";
+      link.addEventListener("click", () => {
+        const nextLocale = link.dataset.locale;
+        if (nextLocale) {
+          localStorage.setItem("spore-blog-locale", nextLocale);
+        }
+      });
+    });
+  }
+
+  bindBlogLocaleLinks();
+  document.addEventListener("astro:after-swap", bindBlogLocaleLinks);
+</script>

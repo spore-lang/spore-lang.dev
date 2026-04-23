@@ -1,17 +1,29 @@
 {
   "name": "spore-lang.dev",
+  "private": true,
   "type": "module",
   "version": "0.0.1",
-  "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22.12.0"
   },
-  "dependencies": {
-    "@astrojs/starlight": "^0.38.3",
-    "astro": "^6.0.1",
-    "sharp": "^0.34.2"
+  "scripts": {
+    "dev": "pnpm -r --parallel --stream --if-present dev",
+    "start": "pnpm -r --parallel --stream --if-present dev",
+    "dev:www": "pnpm --dir apps/www dev",
+    "dev:docs": "pnpm --dir apps/docs dev",
+    "dev:blog": "pnpm --dir apps/blog dev",
+    "build": "pnpm -r build",
+    "build:www": "pnpm --dir apps/www build",
+    "build:docs": "pnpm --dir apps/docs build",
+    "build:blog": "pnpm --dir apps/blog build",
+    "check": "pnpm -r check",
+    "check:www": "pnpm --dir apps/www check",
+    "check:docs": "pnpm --dir apps/docs check",
+    "check:blog": "pnpm --dir apps/blog check",
+    "ci": "pnpm check && pnpm build",
+    "pre-commit": "uvx prek run --all-files",
+    "pre-commit:install": "uvx prek install --install-hooks --hook-type pre-commit --hook-type commit-msg",
+    "pre-commit:uninstall": "uvx prek uninstall"
   }
 }
