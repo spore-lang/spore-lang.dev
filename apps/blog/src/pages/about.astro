@@ -1,0 +1,44 @@
+---
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import Layout from "@/layouts/Layout.astro";
+import { SITE } from "@/config";
+import { getBlogCopy, getBlogLocaleFromPathname } from "@/i18n/blog";
+
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+---
+
+<Layout title={`${copy.about} | ${SITE.title}`}>
+  <Header />
+  <Breadcrumb />
+  <main id="main-content" class="app-layout">
+    <section id="about" class="app-prose mb-28 max-w-app prose-img:border-0">
+      <h1 class="text-2xl tracking-wider sm:text-3xl">{copy.about}</h1>
+      <p>{copy.aboutIntro}</p>
+      <p>{copy.aboutTracksLead}</p>
+      <ul>
+        <li>{copy.aboutTrackVision}</li>
+        <li>{copy.aboutTrackRoadmap}</li>
+        <li>{copy.aboutTrackImplementation}</li>
+      </ul>
+      <p>{copy.aboutLinksLead}</p>
+      <ul>
+        <li>
+          <a href="https://spore-lang.dev/">{copy.mainSite}</a>
+        </li>
+        <li>
+          <a href="https://docs.spore-lang.dev/">{copy.docsSite}</a>
+        </li>
+        <li>
+          <a href="https://github.com/spore-lang/spore">{copy.languageRepo}</a>
+        </li>
+        <li>
+          <a href="https://github.com/spore-lang/spore-lang.dev">{copy.siteRepo}</a>
+        </li>
+      </ul>
+    </section>
+  </main>
+  <Footer />
+</Layout>

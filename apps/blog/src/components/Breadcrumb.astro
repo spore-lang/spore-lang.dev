@@ -1,0 +1,59 @@
+---
+import {
+  getBlogCopy,
+  getBlogLocaleFromPathname,
+  localizePath,
+  stripLocaleFromPath,
+} from "@/i18n/blog";
+
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+
+const currentUrlPath = stripLocaleFromPath(Astro.url.pathname).replace(/\/+$/, "");
+const segmentLabels: Record<string, string> = {
+  posts: copy.posts,
+  tags: copy.tags,
+  search: copy.search,
+  archives: copy.archives,
+  about: copy.about,
+};
+
+const breadcrumbList = currentUrlPath.split("/").filter(Boolean);
+const labelForSegment = (segment: string) =>
+  segmentLabels[segment] ?? decodeURIComponent(segment);
+---
+
+<nav class="app-layout mt-8 mb-1" aria-label="breadcrumb">
+  <ul
+    class="font-light [&>li]:inline [&>li:not(:last-child)>a]:hover:opacity-100"
+  >
+    <li>
+      <a href={localizePath("/", locale)} class="opacity-80">{copy.home}</a>
+      <span aria-hidden="true" class="opacity-80">&raquo;</span>
+    </li>
+    {
+      breadcrumbList.map((breadcrumb, index) =>
+        index + 1 === breadcrumbList.length ? (
+          <li>
+            <span class="opacity-75" aria-current="page">
+              {labelForSegment(breadcrumb)}
+            </span>
+          </li>
+        ) : (
+          <li>
+            <a
+              href={localizePath(
+                `/${breadcrumbList.slice(0, index + 1).join("/")}`,
+                locale
+              )}
+              class="opacity-70"
+            >
+              {labelForSegment(breadcrumb)}
+            </a>
+            <span aria-hidden="true">&raquo;</span>
+          </li>
+        )
+      )
+    }
+  </ul>
+</nav>

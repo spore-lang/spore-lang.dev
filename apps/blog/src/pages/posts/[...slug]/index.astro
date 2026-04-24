@@ -1,0 +1,24 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import PostDetails from "@/layouts/PostDetails.astro";
+import { getPath } from "@/utils/getPath";
+import { getPublishedPostsForLocale } from "@/utils/getLocalePosts";
+
+type Props = {
+  post: CollectionEntry<"blog">;
+  posts: CollectionEntry<"blog">[];
+};
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPostsForLocale("en");
+  return posts.map(post => ({
+    params: { slug: getPath(post.id, post.filePath, false) },
+    props: { post, posts },
+  }));
+}
+
+const { post, posts } = Astro.props as Props;
+const allPosts = await getCollection("blog");
+---
+
+<PostDetails post={post} posts={posts} allPosts={allPosts} />

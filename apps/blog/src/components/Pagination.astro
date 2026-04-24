@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+import IconArrowLeft from "@/assets/icons/IconArrowLeft.svg";
+import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
+import { getBlogCopy, getBlogLocaleFromPathname } from "@/i18n/blog";
+import type { PaginationPage } from "@/utils/pagination";
+import LinkButton from "./LinkButton.astro";
+
+type Props = {
+  page: PaginationPage<CollectionEntry<"blog">>;
+};
+
+const { page } = Astro.props;
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+---
+
+{
+  page.lastPage > 1 && (
+    <nav
+      class="mt-auto mb-8 flex justify-center"
+      role="navigation"
+      aria-label={copy.pagination}
+    >
+      <LinkButton
+        disabled={!page.url.prev}
+        href={page.url.prev as string}
+        class:list={["me-4 select-none", { "opacity-50": !page.url.prev }]}
+        aria-label={copy.previousPage}
+      >
+        <IconArrowLeft class="inline-block rtl:rotate-180" />
+        {copy.previousPage}
+      </LinkButton>
+      {page.currentPage} / {page.lastPage}
+      <LinkButton
+        disabled={!page.url.next}
+        href={page.url.next as string}
+        class:list={["ms-4 select-none", { "opacity-50": !page.url.next }]}
+        aria-label={copy.nextPage}
+      >
+        {copy.nextPage}
+        <IconArrowRight class="inline-block rtl:rotate-180" />
+      </LinkButton>
+    </nav>
+  )
+}

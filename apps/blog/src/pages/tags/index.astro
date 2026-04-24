@@ -1,0 +1,33 @@
+---
+import { getCollection } from "astro:content";
+import Main from "@/layouts/Main.astro";
+import Layout from "@/layouts/Layout.astro";
+import Tag from "@/components/Tag.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import getUniqueTags from "@/utils/getUniqueTags";
+import { filterPostsByLocale } from "@/utils/blogContent";
+import { SITE } from "@/config";
+import { getBlogCopy, getBlogLocaleFromPathname } from "@/i18n/blog";
+
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+const posts = filterPostsByLocale(await getCollection("blog"), locale);
+const tags = getUniqueTags(posts);
+---
+
+<Layout title={`${copy.tags} | ${SITE.title}`}>
+  <Header />
+  <Main pageTitle={copy.tags} pageDesc={copy.tagsDescription}>
+    {
+      tags.length === 0 ? (
+        <p>{copy.noTags}</p>
+      ) : (
+        <ul class="flex flex-wrap gap-6">
+          {tags.map(({ tag, tagName }) => <Tag {tag} {tagName} />)}
+        </ul>
+      )
+    }
+  </Main>
+  <Footer />
+</Layout>

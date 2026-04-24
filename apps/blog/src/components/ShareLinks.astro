@@ -1,0 +1,30 @@
+---
+import { getShareLinks } from "@/constants";
+import { getBlogCopy, getBlogLocaleFromPathname } from "@/i18n/blog";
+import LinkButton from "./LinkButton.astro";
+
+const URL = Astro.url;
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+const shareLinks = getShareLinks(locale);
+---
+
+{
+  shareLinks.length > 0 && (
+    <div class="flex flex-none flex-col items-center justify-center gap-1 md:items-start">
+      <span class="italic">{copy.shareThisPost}</span>
+      <div class="text-center">
+        {shareLinks.map(social => (
+          <LinkButton
+            href={`${social.href + URL}`}
+            class="scale-90 p-2 hover:rotate-6 sm:p-1"
+            title={social.linkTitle}
+          >
+            <social.icon class="inline-block size-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110" />
+            <span class="sr-only">{social.linkTitle}</span>
+          </LinkButton>
+        ))}
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,63 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Main from "@/layouts/Main.astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import Card from "@/components/Card.astro";
+import Pagination from "@/components/Pagination.astro";
+import { SITE } from "@/config";
+import {
+  getBlogCopy,
+  getBlogLocaleFromPathname,
+} from "@/i18n/blog";
+import getUniqueTags from "@/utils/getUniqueTags";
+import getPostsByTag from "@/utils/getPostsByTag";
+import { getPublishedPostsForLocale } from "@/utils/getLocalePosts";
+import { buildPaginatedPaths, type PaginationPage } from "@/utils/pagination";
+const BASE_PATH = "/tags";
+
+type Props = {
+  page: PaginationPage<CollectionEntry<"blog">>;
+  tagName: string;
+};
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPostsForLocale("en");
+  const tags = getUniqueTags(posts);
+
+  return tags.flatMap(({ tag, tagName }) =>
+    buildPaginatedPaths(
+      getPostsByTag(posts, tag),
+      SITE.postPerPage,
+      `${BASE_PATH}/${tag}`
+    ).map(({ params, props }) => ({
+      params: { tag, ...params },
+      props: { ...props, tagName },
+    }))
+  );
+}
+
+const { tag } = Astro.params;
+const { page, tagName } = Astro.props as Props;
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+---
+
+<Layout title={`${copy.tagPageTitle}: ${tagName} | ${SITE.title}`}>
+  <Header />
+  <Main
+    pageTitle={[`${copy.tagPageTitle}: `, `${tagName}`]}
+    titleTransition={tag as string}
+    pageDesc={copy.tagPageDescription(tagName)}
+  >
+    <h1 slot="title" transition:name={tag}>{`${copy.tagPageTitle}: ${tagName}`}</h1>
+    <ul>
+      {page.data.map(data => <Card {...data} />)}
+    </ul>
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>
