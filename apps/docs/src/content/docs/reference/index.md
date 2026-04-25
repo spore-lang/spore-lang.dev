@@ -1,6 +1,6 @@
 ---
 title: Reference
-description: Reference entry points for the Spore language and project docs.
+description: Reference entry points for the Spore project docs.
 sidebar:
   order: 3
 ---
