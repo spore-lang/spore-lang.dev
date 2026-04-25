@@ -33,31 +33,45 @@ hooks = [
 repo = "https://github.com/crate-ci/typos"
 rev = "v1.33.1"
 hooks = [
-  { id = "typos", args = ["--force-exclude"], exclude = '^\.github/styles/' },
+  {
+    id = "typos",
+    args = ["--force-exclude"],
+    exclude = '^\.github/styles/'
+  },
 ]
 
 [[repos]]
 repo = "https://github.com/vale-cli/vale"
 rev = "v3.14.1"
 hooks = [
-  { id = "vale", args = ["--minAlertLevel=error"], files = '\.md$', exclude = '^\.github/styles/' },
+  {
+    id = "vale",
+    args = ["--minAlertLevel=error"],
+    files = '\.md$',
+    exclude = '^\.github/styles/'
+  },
 ]
 
 [[repos]]
 repo = "https://github.com/lycheeverse/lychee"
 rev = "v0.15.1"
 hooks = [
-  { id = "lychee", args = [
-    "--no-progress",
-    "--exclude",
-    '^https://spore-lang\.dev/',
-    "--exclude",
-    '^https://docs\.spore-lang\.dev/',
-    "--exclude",
-    '^https://github\.com/spore-lang/spore(?:/.*)?$',
-    "--exclude",
-    '^https://github\.com/spore-lang/spore-evolution(?:/.*)?$',
-  ], files = '\.md$', exclude = '^\.github/styles/' },
+  {
+    id = "lychee",
+    args = [
+      "--no-progress",
+      "--exclude",
+      '^https://spore-lang\.dev/',
+      "--exclude",
+      '^https://docs\.spore-lang\.dev/',
+      "--exclude",
+      '^https://github\.com/spore-lang/spore(?:/.*)?$',
+      "--exclude",
+      '^https://github\.com/spore-lang/spore-evolution(?:/.*)?$',
+    ],
+    files = '\.md$',
+    exclude = '^\.github/styles/'
+  },
 ]
 
 [[repos]]
@@ -70,5 +84,12 @@ hooks = [
 [[repos]]
 repo = "local"
 hooks = [
-  { id = "pnpm-check", name = "pnpm-check", entry = "pnpm check", language = "system", pass_filenames = false, files = '^(package\.json|pnpm-workspace\.yaml|apps/[^/]+/(astro\.config\.(mjs|ts)|package\.json|tsconfig\.json|src/.*\.(astro|js|ts|md)))$' },
+  {
+    id = "pnpm-check",
+    name = "pnpm-check",
+    entry = "pnpm check",
+    language = "system",
+    pass_filenames = false,
+    files = '^(package\.json|pnpm-workspace\.yaml|apps/[^/]+/(astro\.config\.(mjs|ts)|package\.json|tsconfig\.json|src/.*\.(astro|js|ts|md)))$'
+  },
 ]
