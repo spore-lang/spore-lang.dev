@@ -12,7 +12,7 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "运行时"]
 
 ## 写作目标
 
-- 盘点当前 `foreign fn`、`EffectHandler`、`HostValue` 已经覆盖的 effects。
+- 盘点当前 `foreign fn`、`EffectHandler`、`HostValue` 已经覆盖的能力。
 - 指出 basic-cli 已经证明了什么，还缺什么。
 - 说明 Platform authoring 为什么会成为生态成败关键。
 
@@ -71,3 +71,4 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "运行时"]
   - `#### FFI integration`
 - `spore-evolution/seps/SEP-0009-standard-library.md`
   - `### Platform binding architecture`
+

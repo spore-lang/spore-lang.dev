@@ -1,67 +1,62 @@
-import { access, readFile } from "node:fs/promises";
+async function loadGoogleFont(
+  font: string,
+  text: string,
+  weight: number
+): Promise<ArrayBuffer> {
+  const API = `https://fonts.googleapis.com/css2?family=${font}:wght@${weight}&text=${encodeURIComponent(text)}`;
 
-type OgFont = {
-  name: string;
-  data: ArrayBuffer;
-  weight: number;
-  style: string;
-};
+  const css = await (
+    await fetch(API, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1",
+      },
+    })
+  ).text();
 
-const FONT_CANDIDATES = {
-  regular: [
-    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf",
-    "/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf",
-    "/System/Library/Fonts/Supplemental/Courier New.ttf",
-  ],
-  bold: [
-    "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf",
-    "/usr/share/fonts/truetype/liberation2/LiberationMono-Bold.ttf",
-    "/System/Library/Fonts/Supplemental/Courier New Bold.ttf",
-  ],
-} as const;
+  const resource = css.match(
+    /src: url\((.+?)\) format\('(opentype|truetype)'\)/
+  );
 
-function toArrayBuffer(buffer: Buffer): ArrayBuffer {
-  const copy = new Uint8Array(buffer.byteLength);
-  copy.set(buffer);
-  return copy.buffer;
-}
+  if (!resource) throw new Error("Failed to download dynamic font");
 
-async function findFontPath(candidates: readonly string[]) {
-  for (const candidate of candidates) {
-    try {
-      await access(candidate);
-      return candidate;
-    } catch {}
+  const res = await fetch(resource[1]);
+
+  if (!res.ok) {
+    throw new Error("Failed to download dynamic font. Status: " + res.status);
   }
 
-  throw new Error(`Missing OG font. Tried: ${candidates.join(", ")}`);
+  return res.arrayBuffer();
 }
 
-async function loadOgFonts(_: string): Promise<OgFont[]> {
-  const [regularPath, boldPath] = await Promise.all([
-    findFontPath(FONT_CANDIDATES.regular),
-    findFontPath(FONT_CANDIDATES.bold),
-  ]);
-
-  const [regularData, boldData] = await Promise.all([
-    readFile(regularPath),
-    readFile(boldPath),
-  ]);
-
-  return [
+async function loadGoogleFonts(
+  text: string
+): Promise<
+  Array<{ name: string; data: ArrayBuffer; weight: number; style: string }>
+> {
+  const fontsConfig = [
     {
-      name: "Spore OG Mono",
-      data: toArrayBuffer(regularData),
+      name: "IBM Plex Mono",
+      font: "IBM+Plex+Mono",
       weight: 400,
       style: "normal",
     },
     {
-      name: "Spore OG Mono",
-      data: toArrayBuffer(boldData),
+      name: "IBM Plex Mono",
+      font: "IBM+Plex+Mono",
       weight: 700,
-      style: "normal",
+      style: "bold",
     },
   ];
+
+  const fonts = await Promise.all(
+    fontsConfig.map(async ({ name, font, weight, style }) => {
+      const data = await loadGoogleFont(font, text, weight);
+      return { name, data, weight, style };
+    })
+  );
+
+  return fonts;
 }
 
-export default loadOgFonts;
+export default loadGoogleFonts;

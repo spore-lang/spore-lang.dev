@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="none">
+  <title>Spore logo concept: S Glyph Flow</title>
+  <g fill="#111111" stroke="#111111" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M186 54c-22-20-54-27-82-19-25 7-42 25-42 45 0 19 14 31 40 36l42 8c18 4 28 11 28 22 0 14-18 26-41 28-25 2-49-6-66-22" stroke-width="24"/>
+    <circle cx="188" cy="52" r="16" stroke="none"/>
+    <circle cx="66" cy="204" r="16" stroke="none"/>
+    <circle cx="126" cy="128" r="18" stroke="none"/>
+  </g>
+</svg>

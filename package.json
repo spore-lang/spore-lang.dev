@@ -13,6 +13,7 @@
     "dev:www": "pnpm --dir apps/www dev",
     "dev:docs": "pnpm --dir apps/docs dev",
     "dev:blog": "pnpm --dir apps/blog dev",
+    "logos:rasterize": "pnpm --dir apps/www exec node scripts/rasterize-logo-concepts.mjs",
     "build": "pnpm -r build",
     "build:www": "pnpm --dir apps/www build",
     "build:docs": "pnpm --dir apps/docs build",

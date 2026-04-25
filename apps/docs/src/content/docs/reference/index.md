@@ -1,6 +1,6 @@
 ---
 title: Reference
-description: Reference entry points for Spore and related project docs.
+description: Reference entry points for the Spore language and project docs.
 sidebar:
   order: 3
 ---
@@ -9,9 +9,9 @@ The detailed reference still lives in the main language repository while this do
 
 ## Primary sources
 
-- `README.md` in `spore-lang/spore`
-- `docs/DESIGN.md` in `spore-lang/spore`
-- `ROADMAP.md` in `spore-lang/spore-evolution`
-- `seps/` in `spore-lang/spore-evolution`
+- [Spore README](https://github.com/spore-lang/spore/blob/main/README.md)
+- [Spore design overview](https://github.com/spore-lang/spore/blob/main/docs/DESIGN.md)
+- [Spore specs directory](https://github.com/spore-lang/spore/tree/main/docs/specs)
+- [Spore evolution roadmap](https://github.com/spore-lang/spore-evolution/blob/main/ROADMAP.md)
 
 As the docs site matures, key reference material will move here in a form optimized for the web.
