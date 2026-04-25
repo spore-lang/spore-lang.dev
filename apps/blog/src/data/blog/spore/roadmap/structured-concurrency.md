@@ -70,4 +70,3 @@ tags: ["Spore", "语言设计", "写作大纲", "并发", "Structured Concurrenc
 - `spore/crates/spore-typeck/src/concurrency.rs`
 - `spore/crates/spore-codegen/src/value.rs`
 - `spore/crates/spore-codegen/src/interpret.rs`
-

@@ -83,4 +83,3 @@ tags: ["Spore", "语言设计", "写作大纲", "函数签名"]
   - 子句解析与归一化
 - `spore/crates/spore-parser/src/formatter.rs`
   - clause 顺序的格式化输出
-

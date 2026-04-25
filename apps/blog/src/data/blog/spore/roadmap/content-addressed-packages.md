@@ -68,4 +68,3 @@ tags: ["Spore", "语言设计", "写作大纲", "包管理", "内容寻址"]
 - `spore/crates/spore-typeck/src/sig_hash.rs`
 - `spore/crates/spore-typeck/src/module.rs`
 - `spore/crates/spore-typeck/src/incremental.rs`
-

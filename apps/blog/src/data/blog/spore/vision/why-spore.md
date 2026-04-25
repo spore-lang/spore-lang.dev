@@ -79,4 +79,3 @@ tags: ["Spore", "语言设计", "写作大纲", "愿景"]
   - 用来概览 Spore 想覆盖的系统范围
 - `spore-evolution/GLOSSARY.md`
   - 用来统一术语，避免文章中途漂移
-

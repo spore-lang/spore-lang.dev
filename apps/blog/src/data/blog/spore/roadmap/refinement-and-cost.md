@@ -69,4 +69,3 @@ tags: ["Spore", "语言设计", "写作大纲", "Refinement", "Cost"]
   - `### 4.12 Four-dimensional verification`
 - `spore/crates/spore-typeck/src/refinement.rs`
 - `spore/crates/spore-typeck/src/cost.rs`
-

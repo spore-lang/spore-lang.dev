@@ -68,4 +68,3 @@ tags: ["Spore", "语言设计", "写作大纲", "互操作", "WASM"]
 - `basic-cli/host/src/lib.rs`
 - `spore/crates/spore-typeck/src/platform.rs`
 - `spore/crates/spore-codegen/src/effect_handler.rs`
-

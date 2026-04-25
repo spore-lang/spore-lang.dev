@@ -72,4 +72,3 @@ tags: ["Spore", "语言设计", "写作大纲", "spec", "测试"]
 - `spore-evolution/seps/SEP-0008-module-package-system.md`
   - `### Test Platforms for deterministic testing`
   - `#### Record/Replay testing mode`
-

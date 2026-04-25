@@ -73,4 +73,3 @@ tags: ["Spore", "语言设计", "写作大纲", "验证", "Spec"]
 - `spore/crates/spore-typeck/src/check.rs`
   - `check_spec_clause`
 - `spore/crates/spore-typeck/src/refinement.rs`
-
