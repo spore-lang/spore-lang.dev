@@ -18,7 +18,7 @@ tags: ["Spore", "语言设计", "写作大纲", "互操作", "WASM"]
 
 ## 核心论点
 
-- rich direct FFI 虽然强大，但会破坏 effect system、Platform 与 content-addressing 主轴。
+- rich direct FFI 虽然强大，但会破坏 capability、Platform 与 content-addressing 主轴。
 - 受控入站接口比任意裸 ABI 暴露更符合 Spore 的设计。
 - WIT world 与 Platform 在概念上高度同构，这让 WASM Components 成为自然长期方向。
 
@@ -31,7 +31,7 @@ tags: ["Spore", "语言设计", "写作大纲", "互操作", "WASM"]
 
 ### 为什么不做 rich direct FFI
 
-- 破坏 effect 边界
+- 破坏 capability 边界
 - 破坏内容寻址故事
 - 让应用层直接接触不受约束的外部世界
 
@@ -39,13 +39,13 @@ tags: ["Spore", "语言设计", "写作大纲", "互操作", "WASM"]
 
 - 受控 inbound entrypoint
 - shared-lib / embedding 模式
-- effect context 仍由边界层建立
+- capability context 仍由边界层建立
 
 ### 长期为什么是 WASM Components
 
 - `Platform` 与 WIT world 的对齐
 - `Result / Option / variant / record` 的映射
-- 组件隔离与 effect 边界的相容性
+- 组件隔离与 capability 边界的相容性
 
 ## 写作边界
 

@@ -43,7 +43,7 @@ tags: ["Spore", "语言设计", "写作大纲", "内存模型", "类型系统"]
 ### Spore 要的“强保证”来自什么
 
 - 类型系统
-- effect system
+- capability / effect 系统
 - cost model
 - spec / property
 - refinement

@@ -8,6 +8,10 @@ hero:
     - text: 开始使用
       link: /zh/getting-started/
       icon: right-arrow
+    - text: 访问 spore-lang.dev
+      link: https://spore-lang.dev
+      icon: external
+      variant: minimal
 sidebar:
   order: 1
 ---
@@ -20,4 +24,4 @@ sidebar:
 - 交互式教程与 playground，
 - 经过审阅的站点内文档。
 
-品牌叙事与主页入口将会部署在 `spore-lang.dev`，而当前实现真相与提案流程仍分别以主语言仓库和 evolution 仓库为准。
+品牌叙事与主页入口位于 [spore-lang.dev](https://spore-lang.dev)，而当前实现真相与提案流程仍分别以主语言仓库和 evolution 仓库为准。

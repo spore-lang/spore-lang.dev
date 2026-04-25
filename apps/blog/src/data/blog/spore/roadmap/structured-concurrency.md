@@ -14,7 +14,7 @@ tags: ["Spore", "语言设计", "写作大纲", "并发", "Structured Concurrenc
 
 - 解释为什么 Spore 拒绝 async coloring。
 - 说明 `parallel_scope`、`spawn`、`Task[T]`、`Channel[T]` 的整体设计。
-- 把 structured concurrency 与 effect system、cost、memory direction 联系起来。
+- 把 structured concurrency 与 capability、cost、memory direction 联系起来。
 
 ## 核心论点
 
@@ -45,7 +45,7 @@ tags: ["Spore", "语言设计", "写作大纲", "并发", "Structured Concurrenc
 
 ### 并发如何与其他系统对齐
 
-- `Spawn` 作为 atomic effect
+- `Spawn` 作为 capability
 - parallel lane 进入 cost vector
 - task tree 进入 diagnostics / tooling
 

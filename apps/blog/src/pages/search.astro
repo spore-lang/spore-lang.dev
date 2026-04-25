@@ -5,28 +5,22 @@ import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/config";
-import {
-  getBlogCopy,
-  getBlogLocaleFromPathname,
-  localizePath,
-} from "@/i18n/blog";
 
-const locale = getBlogLocaleFromPathname(Astro.url.pathname);
-const copy = getBlogCopy(locale);
-const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : localizePath("/", locale);
+const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : "/";
 ---
 
-<Layout title={`${copy.search} | ${SITE.title}`}>
+<Layout title={`搜索 | ${SITE.title}`}>
   <Header />
-  <Main pageTitle={copy.search} pageDesc={copy.searchDescription}>
+  <Main pageTitle="搜索" pageDesc="搜索文章。">
     <div id="pagefind-search" transition:persist data-backurl={backUrl}></div>
   </Main>
   <Footer />
 </Layout>
 
-<script define:vars={{ searchDevMode: copy.searchDevMode }}>
+<script>
   function initSearch() {
-    const pageFindSearch = document.querySelector("#pagefind-search");
+    const pageFindSearch: HTMLElement | null =
+      document.querySelector("#pagefind-search");
 
     if (!pageFindSearch) return;
 
@@ -38,22 +32,24 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : localizePath("/"
       // @ts-expect-error — Missing types for @pagefind/default-ui package.
       const { PagefindUI } = await import("@pagefind/default-ui");
 
+      // Display warning inn dev mode
       if (import.meta.env.DEV) {
         pageFindSearch.innerHTML = `
             <div class="bg-muted/75 rounded p-4 space-y-4 mb-4">
-              <p>${searchDevMode}</p>
+              <p><strong>开发模式提示：</strong>要在本地看到搜索结果，至少先执行一次构建。</p>
               <code class="block bg-black text-white px-2 py-1 rounded">pnpm build</code>
             </div>
           `;
       }
 
+      // Init pagefind ui
       const search = new PagefindUI({
         element: "#pagefind-search",
         showImages: false,
         showSubResults: true,
-        processTerm: function (term) {
-          params.set("q", term);
-          history.replaceState(history.state, "", "?" + params.toString());
+        processTerm: function (term: string) {
+          params.set("q", term); // Update the `q` parameter in the URL
+          history.replaceState(history.state, "", "?" + params.toString()); // Push the new URL without reloading
 
           const backUrl = pageFindSearch?.dataset?.backurl;
           sessionStorage.setItem("backUrl", backUrl + "?" + params.toString());
@@ -62,18 +58,20 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : localizePath("/"
         },
       });
 
+      // If search param exists (eg: search?q=astro), trigger search
       const query = params.get("q");
       if (query) {
         search.triggerSearch(query);
       }
 
+      // Reset search param if search input is cleared
       const searchInput = document.querySelector(".pagefind-ui__search-input");
       const clearButton = document.querySelector(".pagefind-ui__search-clear");
       searchInput?.addEventListener("input", resetSearchParam);
       clearButton?.addEventListener("click", resetSearchParam);
 
-      function resetSearchParam(e) {
-        if (e.target instanceof HTMLInputElement && e.target.value.trim() === "") {
+      function resetSearchParam(e: Event) {
+        if ((e.target as HTMLInputElement)?.value.trim() === "") {
           history.replaceState(history.state, "", window.location.pathname);
         }
       }
@@ -83,6 +81,7 @@ const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : localizePath("/"
   document.addEventListener("astro:after-swap", () => {
     const pagefindSearch = document.querySelector("#pagefind-search");
 
+    // if pagefind search form already exists, don't initialize search component
     if (pagefindSearch && pagefindSearch.querySelector("form")) return;
 
     initSearch();

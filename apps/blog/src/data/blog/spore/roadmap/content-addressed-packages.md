@@ -38,7 +38,7 @@ tags: ["Spore", "语言设计", "写作大纲", "包管理", "内容寻址"]
 ### package、module、Platform 的关系
 
 - Platform 不是特殊旁路，而是普通包中的特殊角色
-- 这让外部 effects、依赖和分发方式保持一致
+- 这让外部能力、依赖和分发方式保持一致
 
 ### Git-first 的工作流价值
 

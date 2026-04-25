@@ -27,7 +27,7 @@ tags: ["Spore", "语言设计", "写作大纲", "验证", "Spec"]
 ### 先盘点现在已经有什么
 
 - type checker
-- effect checker
+- capability checker
 - cost checker
 - spec 执行
 - deterministic test platform 方向

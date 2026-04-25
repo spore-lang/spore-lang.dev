@@ -31,14 +31,14 @@ tags: ["Spore", "语言设计", "写作大纲", "函数签名"]
 - 先用常见语言中的签名举例：参数 + 返回值通常不足以承载完整契约。
 - 引出“函数真正的边界信息”至少包括四层：
   - 类型约束
-  - effect
+  - effect / capability
   - 资源 / 成本
   - 行为契约
 
 ### Spore 的四个子句
 
 - `where`：泛型与约束
-- `uses`：required effects
+- `uses`：能力边界
 - `cost`：资源与性能契约
 - `spec`：行为可执行契约
 
@@ -71,7 +71,7 @@ tags: ["Spore", "语言设计", "写作大纲", "函数签名"]
 
 - `spore/docs/DESIGN.md`
   - `### 函数签名语法（混合式 v0.3）`
-  - `## Effect 系统`
+  - `### 能力集系统`
   - `### 抽象代价模型`
 - `spore-evolution/seps/SEP-0001-core-syntax.md`
   - `### Function signatures: from simple to complex`
