@@ -30,6 +30,24 @@ Monorepo for the public Spore websites.
 - `pnpm pre-commit` - run all configured hooks with `prek`.
 - `pnpm pre-commit:install` - install local Git hooks.
 
+## Deployment
+
+The current deployment baseline is **static output per app**:
+
+- `pnpm build` writes `apps/www/dist`, `apps/docs/dist`, and `apps/blog/dist`.
+- Each site can be deployed independently as static assets.
+- Today the repository fits static hosting first (for example Cloudflare Pages, or another CDN/static host).
+
+Worker-specific deployment is **not wired up yet**:
+
+- there is no `wrangler.toml` / `wrangler.json(c)` in this repo
+- there is no `@astrojs/cloudflare` adapter configured in the Astro apps
+- there is no shared Worker entrypoint that binds the three sites behind Wrangler
+
+So the current repo can cooperate with Cloudflare as a **static-site deployment target**, but it is not yet a Wrangler Worker-native Astro deployment.
+
+One known build caveat remains in `apps/blog`: OG image generation currently reaches external font hosts during build. Before treating deployment as fully reproducible across CI and Worker-oriented pipelines, those fonts should be vendored locally.
+
 ## Repository standards
 
 This repository follows the same baseline as sibling Spore repositories:
