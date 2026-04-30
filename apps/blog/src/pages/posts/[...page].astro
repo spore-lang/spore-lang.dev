@@ -1,45 +1,30 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
 import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
+import getSortedPosts from "@/utils/getSortedPosts";
+import postFilter from "@/utils/postFilter";
 import { SITE } from "@/config";
-import {
-  getBlogCopy,
-  getBlogLocaleFromPathname,
-} from "@/i18n/blog";
-import { getPublishedPostsForLocale } from "@/utils/getLocalePosts";
-import { buildPaginatedPaths, type PaginationPage } from "@/utils/pagination";
 
-type Props = {
-  page: PaginationPage<CollectionEntry<"blog">>;
-};
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getCollection("blog", postFilter);
+  return paginate(getSortedPosts(posts), { pageSize: SITE.postPerPage });
+}) satisfies GetStaticPaths;
 
-export async function getStaticPaths() {
-  const posts = await getPublishedPostsForLocale("en");
-  return buildPaginatedPaths(posts, SITE.postPerPage, "/posts");
-}
-
-const { page } = Astro.props as Props;
-const locale = getBlogLocaleFromPathname(Astro.url.pathname);
-const copy = getBlogCopy(locale);
+const { page } = Astro.props;
 ---
 
-<Layout title={`${copy.posts} | ${SITE.title}`}>
+<Layout title={`文章 | ${SITE.title}`}>
   <Header />
-  <Main pageTitle={copy.posts} pageDesc={copy.postsDescription}>
-    {
-      page.data.length === 0 ? (
-        <p>{copy.noPostsListing}</p>
-      ) : (
-        <ul>
-          {page.data.map(data => <Card {...data} />)}
-        </ul>
-      )
-    }
+  <Main pageTitle="文章" pageDesc="这里收录博客文章。">
+    <ul>
+      {page.data.map(data => <Card {...data} />)}
+    </ul>
   </Main>
 
   <Pagination {page} />

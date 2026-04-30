@@ -1,57 +1,44 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
 import Main from "@/layouts/Main.astro";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import Card from "@/components/Card.astro";
 import Pagination from "@/components/Pagination.astro";
-import { SITE } from "@/config";
-import {
-  getBlogCopy,
-  getBlogLocaleFromPathname,
-} from "@/i18n/blog";
 import getUniqueTags from "@/utils/getUniqueTags";
 import getPostsByTag from "@/utils/getPostsByTag";
-import { getPublishedPostsForLocale } from "@/utils/getLocalePosts";
-import { buildPaginatedPaths, type PaginationPage } from "@/utils/pagination";
-const BASE_PATH = "/tags";
+import { SITE } from "@/config";
 
-type Props = {
-  page: PaginationPage<CollectionEntry<"blog">>;
-  tagName: string;
-};
-
-export async function getStaticPaths() {
-  const posts = await getPublishedPostsForLocale("en");
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const posts = await getCollection("blog");
   const tags = getUniqueTags(posts);
 
-  return tags.flatMap(({ tag, tagName }) =>
-    buildPaginatedPaths(
-      getPostsByTag(posts, tag),
-      SITE.postPerPage,
-      `${BASE_PATH}/${tag}`
-    ).map(({ params, props }) => ({
-      params: { tag, ...params },
-      props: { ...props, tagName },
-    }))
-  );
+  return tags.flatMap(({ tag, tagName }) => {
+    const tagPosts = getPostsByTag(posts, tag);
+
+    return paginate(tagPosts, {
+      params: { tag },
+      props: { tagName },
+      pageSize: SITE.postPerPage,
+    });
+  });
 }
 
-const { tag } = Astro.params;
-const { page, tagName } = Astro.props as Props;
-const locale = getBlogLocaleFromPathname(Astro.url.pathname);
-const copy = getBlogCopy(locale);
+const params = Astro.params;
+const { tag } = params;
+const { page, tagName } = Astro.props;
 ---
 
-<Layout title={`${copy.tagPageTitle}: ${tagName} | ${SITE.title}`}>
+<Layout title={`标签：${tagName} | ${SITE.title}`}>
   <Header />
   <Main
-    pageTitle={[`${copy.tagPageTitle}: `, `${tagName}`]}
-    titleTransition={tag as string}
-    pageDesc={copy.tagPageDescription(tagName)}
+    pageTitle={["标签：", `${tagName}`]}
+    titleTransition={tag}
+    pageDesc={`带有“${tagName}”标签的文章。`}
   >
-    <h1 slot="title" transition:name={tag}>{`${copy.tagPageTitle}: ${tagName}`}</h1>
+    <h1 slot="title" transition:name={tag}>{`标签：${tagName}`}</h1>
     <ul>
       {page.data.map(data => <Card {...data} />)}
     </ul>

@@ -7,21 +7,16 @@ import Socials from "@/components/Socials.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import Card from "@/components/Card.astro";
 import getSortedPosts from "@/utils/getSortedPosts";
-import { filterPostsByLocale } from "@/utils/blogContent";
 import IconRss from "@/assets/icons/IconRss.svg";
 import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
 import { SITE } from "@/config";
 import { getSocials } from "@/constants";
-import {
-  getBlogCopy,
-  getBlogLocaleFromPathname,
-  localizePath,
-} from "@/i18n/blog";
+import { getBlogLocaleFromPathname } from "@/i18n/blog";
 
+const posts = await getCollection("blog");
 const locale = getBlogLocaleFromPathname(Astro.url.pathname);
-const copy = getBlogCopy(locale);
 const socials = getSocials(locale);
-const posts = filterPostsByLocale(await getCollection("blog"), locale);
+
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
@@ -29,77 +24,49 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 <Layout>
   <Header />
-  <main
-    id="main-content"
-    data-layout="index"
-    data-home-path={localizePath("/", locale)}
-    class="app-layout"
-  >
+  <main id="main-content" data-layout="index" class="app-layout">
     <section id="hero" class:list={["pt-8 pb-6", "border-b border-border"]}>
       <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
         {SITE.title}
       </h1>
       <a
         target="_blank"
-        href={localizePath("/rss.xml", locale)}
+        href="/rss.xml"
         class="inline-block"
-        aria-label={copy.rssSubscribe}
-        title={copy.rssSubscribe}
+        aria-label="RSS 订阅"
+        title="RSS 订阅"
       >
         <IconRss
           width={20}
           height={20}
           class="scale-125 stroke-accent stroke-3 rtl:-rotate-90"
         />
-        <span class="sr-only">{copy.rssSubscribe}</span>
+        <span class="sr-only">RSS 订阅</span>
       </a>
 
-      <p>{copy.siteDescription}</p>
+      <p>{SITE.desc}</p>
       <p class="mt-2">
-        {
-          locale === "zh" ? (
-            <>
-              这里会逐步把 `vision`、`roadmap` 与 `implementation` 三组草稿扩写成正式文章。你也可以先从
-              <LinkButton
-                class="underline decoration-dashed underline-offset-4 hover:text-accent"
-                href="https://spore-lang.dev/"
-              >
-                {copy.mainSite}
-              </LinkButton>
-              了解整体定位，或前往
-              <LinkButton
-                class="underline decoration-dashed underline-offset-4 hover:text-accent"
-                href="https://docs.spore-lang.dev/"
-              >
-                {copy.docsSite}
-              </LinkButton>
-              查看当前语言状态。
-            </>
-          ) : (
-            <>
-              This space will publish the finalized `vision`, `roadmap`, and `implementation` essays in English. For the current drafts, start from the
-              <LinkButton
-                class="underline decoration-dashed underline-offset-4 hover:text-accent"
-                href="https://spore-lang.dev/"
-              >
-                {copy.mainSite}
-              </LinkButton>
-              , or check the
-              <LinkButton
-                class="underline decoration-dashed underline-offset-4 hover:text-accent"
-                href="https://docs.spore-lang.dev/"
-              >
-                {copy.docsSite}
-              </LinkButton>
-              .
-            </>
-          )
-        }
+        这里会逐步把 `vision`、`roadmap` 与 `implementation` 三组草稿扩写成正式文章。你也可以先从
+        <LinkButton
+          class="underline decoration-dashed underline-offset-4 hover:text-accent"
+          href="https://spore-lang.dev/"
+        >
+          主站
+        </LinkButton>
+        了解整体定位，或前往
+        <LinkButton
+          class="underline decoration-dashed underline-offset-4 hover:text-accent"
+          href="https://docs.spore-lang.dev/"
+        >
+          文档站
+        </LinkButton>
+        查看当前语言状态。
       </p>
       {
+        // only display if at least one social link is enabled
         socials.length > 0 && (
           <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">{copy.relatedLinks}</div>
+            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">相关链接：</div>
             <Socials />
           </div>
         )
@@ -110,22 +77,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
       sortedPosts.length === 0 && (
         <section id="upcoming-posts" class="pt-12 pb-6">
           <p class="text-lg leading-8 text-foreground/85">
-            {
-              locale === "en" ? (
-                <>
-                  {copy.englishEmptyHome}{" "}
-                  <LinkButton
-                    class="underline decoration-dashed underline-offset-4 hover:text-accent"
-                    href={localizePath("/", "zh")}
-                  >
-                    {copy.browseChineseDrafts}
-                  </LinkButton>
-                  .
-                </>
-              ) : (
-                copy.noPostsListing
-              )
-            }
+            文章正在整理中，首批关于语言愿景、路线图与实现计划的草稿会在打磨后陆续发布。
           </p>
         </section>
       )
@@ -140,7 +92,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
             { "border-b border-border": recentPosts.length > 0 },
           ]}
         >
-          <h2 class="text-2xl font-semibold tracking-wide">{copy.featuredPosts}</h2>
+          <h2 class="text-2xl font-semibold tracking-wide">置顶文章</h2>
           <ul>
             {featuredPosts.map(data => (
               <Card variant="h3" {...data} />
@@ -153,7 +105,7 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     {
       recentPosts.length > 0 && (
         <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">{copy.latestPosts}</h2>
+          <h2 class="text-2xl font-semibold tracking-wide">最新文章</h2>
           <ul>
             {recentPosts.map(
               (data, index) =>
@@ -165,8 +117,8 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
     }
 
     <div class="my-8 text-center">
-      <LinkButton href={localizePath("/posts", locale)}>
-        {copy.allPosts}
+      <LinkButton href="/posts/">
+        查看全部文章
         <IconArrowRight class="inline-block rtl:-rotate-180" />
       </LinkButton>
     </div>
@@ -176,11 +128,10 @@ const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
 <script>
   document.addEventListener("astro:page-load", () => {
-    const mainContent = document.querySelector("#main-content") as HTMLElement;
-    const indexLayout = mainContent?.dataset?.layout;
-    const homePath = mainContent?.dataset?.homePath;
-    if (indexLayout && homePath) {
-      sessionStorage.setItem("backUrl", homePath);
+    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
+      ?.dataset?.layout;
+    if (indexLayout) {
+      sessionStorage.setItem("backUrl", "/");
     }
   });
 </script>
