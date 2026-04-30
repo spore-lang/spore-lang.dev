@@ -7,9 +7,9 @@ sidebar:
 
 ## 当前入口
 
-- 公开主页将会部署在 `spore-lang.dev`。
-- 语言实现当前位于 `spore-lang/spore`。
-- 提案、路线图与流程文档当前位于 `spore-lang/spore-evolution`。
+- 公开主页位于 [spore-lang.dev](https://spore-lang.dev)。
+- 语言实现位于 [spore-lang/spore](https://github.com/spore-lang/spore)。
+- 提案、路线图与流程文档位于 [spore-lang/spore-evolution](https://github.com/spore-lang/spore-evolution)。
 - 这个文档站会逐步成长为与这两个仓库互补的公共学习入口。
 
 ## 接下来

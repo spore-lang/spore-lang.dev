@@ -26,7 +26,7 @@ Monorepo for the public Spore websites.
 - `pnpm check:blog` - run static checks for `apps/blog`.
 - `pnpm build` - build all sites in the workspace.
 - `pnpm build:blog` - build `apps/blog`.
-- `pnpm run ci` - run the local CI command set.
+- `pnpm ci` - run the local CI command set.
 - `pnpm pre-commit` - run all configured hooks with `prek`.
 - `pnpm pre-commit:install` - install local Git hooks.
 

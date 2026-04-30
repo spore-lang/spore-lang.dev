@@ -8,6 +8,10 @@ hero:
     - text: Getting Started
       link: /getting-started/
       icon: right-arrow
+    - text: Visit spore-lang.dev
+      link: https://spore-lang.dev
+      icon: external
+      variant: minimal
 sidebar:
   order: 1
 ---
@@ -20,4 +24,4 @@ This site is the docs half of the public web presence and will grow into the hom
 - interactive tutorials and playgrounds, and
 - reviewed web-native documentation.
 
-The root-site narrative will live at `spore-lang.dev`, while the canonical implementation and proposal sources still live in the main language and evolution repositories.
+The root-site narrative lives at [spore-lang.dev](https://spore-lang.dev), while the canonical implementation and proposal sources still live in the main language and evolution repositories.
