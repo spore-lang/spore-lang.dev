@@ -38,7 +38,7 @@ tags: ["Spore", "语言设计", "写作大纲", "函数签名"]
 ### Spore 的四个子句
 
 - `where`：泛型与约束
-- `uses`：required effects
+- `uses`：effect 边界
 - `cost`：资源与性能契约
 - `spec`：行为可执行契约
 
@@ -77,9 +77,9 @@ tags: ["Spore", "语言设计", "写作大纲", "函数签名"]
   - `### Function signatures: from simple to complex`
   - `### Behavioral specification (spec clause)`
   - `### Function signature semantics`
-- `spore/crates/spore-parser/src/ast.rs`
+- `spore/crates/sporec-parser/src/ast.rs`
   - `FnDef`、`SpecClause`
-- `spore/crates/spore-parser/src/parser.rs`
+- `spore/crates/sporec-parser/src/parser/mod.rs`
   - 子句解析与归一化
-- `spore/crates/spore-parser/src/formatter.rs`
+- `spore/crates/sporec-parser/src/formatter/mod.rs`
   - clause 顺序的格式化输出

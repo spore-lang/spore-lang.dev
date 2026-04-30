@@ -8,7 +8,7 @@ draft: true
 tags: ["Spore", "语言设计", "写作大纲", "Platform", "Effect System"]
 ---
 
-这篇文章要讲清楚：Spore 里的 `Platform` 不是部署细节，`uses [...]` 也不是权限列表语法糖。它们共同回答的是一个更大的问题：**语言核心到底应不应该直接拥有外部世界。**
+这篇文章要讲清楚：Spore 里的 `Platform` 不是部署细节，`uses [...]` 也不是随手附加的 effect 列表。它们共同回答的是一个更大的问题：**语言核心到底应不应该直接拥有外部世界。**
 
 整篇应站在原则层，而不是一上来讲 host ABI 或 `foreign fn`。
 
@@ -20,9 +20,9 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "Effect System"]
 
 ## 核心论点
 
-- 传统语言把 IO 做成“默认 effect”，导致替换、测试、沙箱和移植都要额外补救。
+- 传统语言把 IO 做成默认内建接口，导致替换、测试、沙箱和移植都要额外补救。
 - Spore 把 IO 放到 `Platform` 边界，是为了让应用代码只声明意图，不直接拥有外部权力。
-- effect system 不是单纯的权限控制，而是**边界设计工具**。
+- effect system 不是单纯的限制机制，而是**边界设计工具**。
 
 ## 建议结构
 
@@ -37,9 +37,9 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "Effect System"]
 
 ### Spore 的回答：effect system + Platform
 
-- `uses [...]` 先定义“函数需要哪些 required effects”
-- `Platform` 再决定“这些 effects 由谁、在什么环境里处理”
-- 应用代码只消费 effect 接口，不直接绑定具体 IO 机制
+- `uses [...]` 先定义“函数需要哪些 effects”
+- `Platform` 再决定“这些 effects 由谁、在什么环境里实现”
+- 应用代码只声明 effects、调用平台 API，不直接绑定具体 IO 机制
 
 ### Platform 为什么不是实现细节
 
@@ -69,7 +69,7 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "Effect System"]
 
 - 不展开 host ABI 细节。
 - 不提前讲 WASM Component Model。
-- 不详细讨论所有 atomic effect 的粒度争议。
+- 不详细讨论所有 effect 粒度争议。
 
 ## 参考资料
 
@@ -87,6 +87,6 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "Effect System"]
   - `### Platforms`
   - `### Platform abstraction`
 - `basic-cli/README.md`
-- `basic-cli/platform/Stdout.sp`
-- `basic-cli/platform/File.sp`
+- `basic-cli/src/basic_cli/stdout.sp`
+- `basic-cli/src/basic_cli/file.sp`
 - `basic-cli/host/src/lib.rs`

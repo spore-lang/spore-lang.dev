@@ -65,6 +65,6 @@ tags: ["Spore", "语言设计", "写作大纲", "包管理", "内容寻址"]
   - `### Content-addressed functions: dual hashing`
   - `### Package management`
   - `### Publish and discovery flow`
-- `spore/crates/spore-typeck/src/sig_hash.rs`
-- `spore/crates/spore-typeck/src/module.rs`
-- `spore/crates/spore-typeck/src/incremental.rs`
+- `spore/crates/sporec-typeck/src/sig_hash.rs`
+- `spore/crates/sporec-typeck/src/module/mod.rs`
+- `spore/crates/sporec-typeck/src/incremental.rs`

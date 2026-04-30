@@ -65,11 +65,11 @@ tags: ["Spore", "语言设计", "写作大纲", "验证", "Spec"]
 - `spore-evolution/seps/SEP-0008-module-package-system.md`
   - `### Test Platforms for deterministic testing`
   - `#### Record/Replay testing mode`
-- `spore/crates/spore-codegen/src/lib.rs`
+- `spore/crates/sporec-codegen/src/lib.rs`
   - `test_specs`
   - `test_values_for_type`
-- `spore/crates/sporec/src/compiler.rs`
+- `spore/crates/sporec-driver/src/compiler/mod.rs`
   - `test_specs`
-- `spore/crates/spore-typeck/src/check.rs`
+- `spore/crates/sporec-typeck/src/check/mod.rs`
   - `check_spec_clause`
-- `spore/crates/spore-typeck/src/refinement.rs`
+- `spore/crates/sporec-typeck/src/refinement.rs`

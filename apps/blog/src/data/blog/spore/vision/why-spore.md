@@ -56,7 +56,7 @@ tags: ["Spore", "语言设计", "写作大纲", "愿景"]
 - 不优化：
   - 把一切证明到 theorem prover 等级
   - 把 ownership / lifetime 变成用户默认心智
-  - 用 rich direct FFI 换掉 effect system / Platform 边界
+  - 用 rich direct FFI 换掉 effect / Platform 边界
 
 ### 用一句话收束
 

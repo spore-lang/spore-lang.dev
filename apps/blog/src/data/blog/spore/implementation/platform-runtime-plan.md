@@ -12,7 +12,7 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "运行时"]
 
 ## 写作目标
 
-- 盘点当前 `foreign fn`、`EffectHandler`、`HostValue` 已经覆盖的 effects。
+- 盘点当前 `foreign fn`、`EffectHandler`、`HostValue` 已经覆盖的 effect 边界。
 - 指出 basic-cli 已经证明了什么，还缺什么。
 - 说明 Platform authoring 为什么会成为生态成败关键。
 
@@ -56,15 +56,15 @@ tags: ["Spore", "语言设计", "写作大纲", "Platform", "运行时"]
 ## 参考资料
 
 - `basic-cli/README.md`
-- `basic-cli/platform/Stdin.sp`
-- `basic-cli/platform/Stdout.sp`
-- `basic-cli/platform/File.sp`
-- `basic-cli/platform/Dir.sp`
-- `basic-cli/platform/Env.sp`
-- `basic-cli/platform/Cmd.sp`
+- `basic-cli/src/basic_cli/stdin.sp`
+- `basic-cli/src/basic_cli/stdout.sp`
+- `basic-cli/src/basic_cli/file.sp`
+- `basic-cli/src/basic_cli/dir.sp`
+- `basic-cli/src/basic_cli/env.sp`
+- `basic-cli/src/basic_cli/cmd.sp`
 - `basic-cli/host/src/lib.rs`
-- `spore/crates/spore-codegen/src/effect_handler.rs`
-- `spore/crates/spore-typeck/src/platform.rs`
+- `spore/crates/sporec-codegen/src/effect_handler.rs`
+- `spore/crates/sporec-typeck/src/platform.rs`
 - `spore-evolution/seps/SEP-0008-module-package-system.md`
   - `### Platform abstraction`
   - `### Platform details`

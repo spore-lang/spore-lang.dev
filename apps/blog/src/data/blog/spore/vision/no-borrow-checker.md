@@ -81,5 +81,5 @@ tags: ["Spore", "语言设计", "写作大纲", "内存模型", "类型系统"]
   - `### 1. More IR layers (4 or 5, like Rust)`
 - `spore-evolution/ROADMAP.md`
   - 性能目标与 self-hosting 目标
-- `spore/crates/spore-codegen/src/value.rs`
+- `spore/crates/sporec-codegen/src/value.rs`
   - 当前运行时还在原型阶段的证据

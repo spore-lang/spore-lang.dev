@@ -18,7 +18,7 @@ tags: ["Spore", "语言设计", "写作大纲", "互操作", "WASM"]
 
 ## 核心论点
 
-- rich direct FFI 虽然强大，但会破坏 effect system、Platform 与 content-addressing 主轴。
+- rich direct FFI 虽然强大，但会破坏 effect、Platform 与 content-addressing 主轴。
 - 受控入站接口比任意裸 ABI 暴露更符合 Spore 的设计。
 - WIT world 与 Platform 在概念上高度同构，这让 WASM Components 成为自然长期方向。
 
@@ -66,5 +66,5 @@ tags: ["Spore", "语言设计", "写作大纲", "互操作", "WASM"]
   - `#### FFI integration`
 - `basic-cli/README.md`
 - `basic-cli/host/src/lib.rs`
-- `spore/crates/spore-typeck/src/platform.rs`
-- `spore/crates/spore-codegen/src/effect_handler.rs`
+- `spore/crates/sporec-typeck/src/platform.rs`
+- `spore/crates/sporec-codegen/src/effect_handler.rs`
