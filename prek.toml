@@ -65,7 +65,11 @@ rev = "v0.15.1"
 hooks = [
   {
     id = "lychee",
-    args = ["--no-progress"],
+    args = [
+      "--no-progress",
+      "--exclude=^https://spore-lang\\.dev/",
+      "--exclude=^https://github\\.com/spore-lang/(spore|spore-evolution)(/.*)?$",
+    ],
     files = '\.md$',
     exclude = '^\.github/styles/'
   },
