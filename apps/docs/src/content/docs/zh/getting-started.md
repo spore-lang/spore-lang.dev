@@ -7,28 +7,27 @@ sidebar:
 
 ## 安装 CLI
 
-可分发的 PyPI 包将使用 `spore-cli` 这个名字。
+当前的 alpha CLI 包是 `spore-lang`。
 带 `v*` 的标签发布已经配置为同时把可安装制品推送到
-[PyPI](https://pypi.org/project/spore-cli/) 和
+[PyPI](https://pypi.org/project/spore-lang/) 和
 [GitHub Releases](https://github.com/spore-lang/spore/releases)。
-在第一个公开发布上线之前，请先使用源码构建。
 
-首个包发布之后，可以这样安装：
+可以这样安装当前 alpha 包：
 
 ```bash
-uv tool install spore-cli
+uv tool install spore-lang
 spore --help
 ```
 
 如果你更习惯 `pipx`，也可以这样安装：
 
 ```bash
-pipx install spore-cli
+pipx install spore-lang
 ```
 
 ## 从源码构建
 
-如果你需要尚未发布的改动，或者首个公开包还没上线，可以先用源码仓库：
+如果你需要尚未发布的改动，可以使用源码仓库：
 
 ```bash
 git clone https://github.com/spore-lang/spore.git
