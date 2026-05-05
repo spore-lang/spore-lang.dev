@@ -7,16 +7,17 @@ sidebar:
 
 ## Install the CLI
 
-The current alpha CLI package is `spore-lang`.
-Tagged releases are set up to publish installable artifacts to both
-[PyPI](https://pypi.org/project/spore-lang/) and
-[GitHub Releases](https://github.com/spore-lang/spore/releases).
+The current published alpha CLI package is `spore-lang` on
+[PyPI](https://pypi.org/project/spore-lang/).
+The repository already contains a tag-driven publish workflow for PyPI and
+[GitHub Releases](https://github.com/spore-lang/spore/releases), but the next
+public release has not been cut yet, so GitHub Releases may lag behind PyPI.
 
 Install the current alpha package with:
 
 ```bash
 uv tool install spore-lang
-spore --help
+spore --version
 ```
 
 You can also use `pipx`:
@@ -27,7 +28,7 @@ pipx install spore-lang
 
 ## Build from source
 
-Use the source checkout when you need unreleased changes:
+Use the source checkout when you need unreleased main-branch changes:
 
 ```bash
 git clone https://github.com/spore-lang/spore.git
