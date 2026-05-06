@@ -49,13 +49,36 @@ Each Worker serves its Astro build output from a Static Assets binding named `AS
 - `pnpm deploy:docs` - build `apps/docs` and deploy `docs.spore-lang.dev`.
 - `pnpm deploy:blog` - build `apps/blog` and deploy `blog.spore-lang.dev`.
 - `pnpm deploy` - deploy all three Workers in sequence.
+- `pnpm versions:www` - upload a preview version for `spore-lang.dev`.
+- `pnpm versions:docs` - upload a preview version for `docs.spore-lang.dev`.
+- `pnpm versions:blog` - upload a preview version for `blog.spore-lang.dev`.
 
 ### CI / CD
 
 - `pnpm types:check`, `pnpm check`, and `pnpm build` are the validation baseline.
-- `.github/workflows/cd-workers.yml` deploys each site as its own Worker on pushes to `main`.
-- If you deploy through GitHub Actions + Wrangler, configure `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as GitHub Actions secrets or in your local shell.
-- If you want a Vercel-style GitHub App flow instead, use Cloudflare Workers Builds / Git integration from the Cloudflare dashboard rather than this workflow.
+- GitHub Actions now handles validation only; production deployment is expected to run through Cloudflare Workers Builds / Git integration.
+- Manual local deployment still works through Wrangler (`pnpm deploy:*` / `pnpm versions:*`) and uses your local `wrangler login` session or shell environment.
+
+### Cloudflare Workers Builds setup
+
+For a Vercel-style GitHub App deployment flow, connect this repository to Cloudflare from **Workers & Pages** and create one Git-connected Worker per app.
+
+| Worker | Wrangler config | Root directory | Build command | Deploy command | Non-production branch deploy command |
+| --- | --- | --- | --- | --- | --- |
+| `spore-lang-www` | `apps/www/wrangler.jsonc` | `/` | `pnpm build:www` | `pnpm exec wrangler deploy --config apps/www/wrangler.jsonc` | `pnpm exec wrangler versions upload --config apps/www/wrangler.jsonc` |
+| `spore-lang-docs` | `apps/docs/wrangler.jsonc` | `/` | `pnpm build:docs` | `pnpm exec wrangler deploy --config apps/docs/wrangler.jsonc` | `pnpm exec wrangler versions upload --config apps/docs/wrangler.jsonc` |
+| `spore-lang-blog` | `apps/blog/wrangler.jsonc` | `/` | `pnpm build:blog` | `pnpm exec wrangler deploy --config apps/blog/wrangler.jsonc` | `pnpm exec wrangler versions upload --config apps/blog/wrangler.jsonc` |
+
+Recommended Cloudflare-side settings:
+
+- Connect the same GitHub repository to all three Workers.
+- Set the production branch to `main`.
+- Enable non-production branch builds if you want preview URLs and PR feedback from Cloudflare.
+- Add build watch paths per Worker so monorepo commits only rebuild the affected site:
+  - `www`: `apps/www/**`, `package.json`, `pnpm-lock.yaml`
+  - `docs`: `apps/docs/**`, `package.json`, `pnpm-lock.yaml`
+  - `blog`: `apps/blog/**`, `package.json`, `pnpm-lock.yaml`
+- Let Workers Builds manage its own build token unless you have a reason to pin a custom token in the Cloudflare dashboard.
 
 ### Fonts
 
