@@ -13,17 +13,29 @@
     "dev:www": "pnpm --dir apps/www dev",
     "dev:docs": "pnpm --dir apps/docs dev",
     "dev:blog": "pnpm --dir apps/blog dev",
+    "types": "pnpm types:www && pnpm types:docs && pnpm types:blog",
+    "types:www": "pnpm exec wrangler types --config apps/www/wrangler.jsonc apps/www/worker-configuration.d.ts",
+    "types:docs": "pnpm exec wrangler types --config apps/docs/wrangler.jsonc apps/docs/worker-configuration.d.ts",
+    "types:blog": "pnpm exec wrangler types --config apps/blog/wrangler.jsonc apps/blog/worker-configuration.d.ts",
     "build": "pnpm -r build",
     "build:www": "pnpm --dir apps/www build",
     "build:docs": "pnpm --dir apps/docs build",
     "build:blog": "pnpm --dir apps/blog build",
+    "deploy": "pnpm deploy:www && pnpm deploy:docs && pnpm deploy:blog",
+    "deploy:www": "pnpm build:www && pnpm exec wrangler deploy --config apps/www/wrangler.jsonc",
+    "deploy:docs": "pnpm build:docs && pnpm exec wrangler deploy --config apps/docs/wrangler.jsonc",
+    "deploy:blog": "pnpm build:blog && pnpm exec wrangler deploy --config apps/blog/wrangler.jsonc",
     "check": "pnpm -r check",
     "check:www": "pnpm --dir apps/www check",
     "check:docs": "pnpm --dir apps/docs check",
     "check:blog": "pnpm --dir apps/blog check",
-    "ci": "pnpm check && pnpm build",
+    "ci": "pnpm check && pnpm types && pnpm build",
     "pre-commit": "uvx prek run --all-files",
     "pre-commit:install": "uvx prek install --install-hooks --hook-type pre-commit --hook-type commit-msg",
     "pre-commit:uninstall": "uvx prek uninstall"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "wrangler": "^4.88.0"
   }
 }

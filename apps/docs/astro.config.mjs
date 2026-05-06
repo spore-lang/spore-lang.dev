@@ -45,6 +45,63 @@ export default defineConfig({
       defaultLocale: 'root',
       head: [
         {
+          tag: 'link',
+          attrs: {
+            rel: 'preconnect',
+            href: 'https://cdn.jsdelivr.net',
+            crossorigin: 'anonymous',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'dns-prefetch',
+            href: 'https://cdn.jsdelivr.net',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'https://cdn.jsdelivr.net/npm/@fontsource-variable/geist@5.2.8/wght.css',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'https://cdn.jsdelivr.net/npm/cn-fontsource-source-han-sans-sc-vf@1.0.10/font.css',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'https://cdn.jsdelivr.net/npm/maplemono-normal-nf-cn@1.0.0/regular.css',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'https://cdn.jsdelivr.net/npm/maplemono-normal-nf-cn@1.0.0/italic.css',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.2.5/latin-400.css',
+          },
+        },
+        {
+          tag: 'link',
+          attrs: {
+            rel: 'stylesheet',
+            href: 'https://cdn.jsdelivr.net/npm/@fontsource/iosevka@5.2.5/latin-400-italic.css',
+          },
+        },
+        {
           tag: 'script',
           attrs: {
             'data-spore-locale-redirect': 'true',
@@ -52,6 +109,7 @@ export default defineConfig({
           content: docsLocaleRedirectScript,
         },
       ],
+      customCss: ['./src/styles/fonts.css'],
       components: {
         LanguageSelect: './src/components/LanguageSelect.astro',
       },

@@ -3,7 +3,7 @@ import satori from "satori";
 import { SITE } from "@/config";
 import { getBlogCopy } from "@/i18n/blog";
 import { getPostLocale } from "@/utils/blogContent";
-import loadGoogleFonts from "../loadGoogleFont";
+import loadOgFonts from "../loadOgFonts";
 
 // const markup = html`<div
 //       style={{
@@ -226,7 +226,7 @@ export default async post => {
       width: 1200,
       height: 630,
       embedFont: true,
-      fonts: await loadGoogleFonts(
+      fonts: await loadOgFonts(
         post.data.title + post.data.author + SITE.title + copy.by
       ),
     }

@@ -1,0 +1,65 @@
+name: "Deploy - Workers"
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-workers-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: ${{ matrix.site }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - site: www
+            build_command: pnpm build:www
+            wrangler_config: apps/www/wrangler.jsonc
+            types_path: apps/www/worker-configuration.d.ts
+          - site: docs
+            build_command: pnpm build:docs
+            wrangler_config: apps/docs/wrangler.jsonc
+            types_path: apps/docs/worker-configuration.d.ts
+          - site: blog
+            build_command: pnpm build:blog
+            wrangler_config: apps/blog/wrangler.jsonc
+            types_path: apps/blog/worker-configuration.d.ts
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.0
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: ${{ matrix.build_command }}
+
+      - name: Check worker types
+        run: pnpm exec wrangler types --config ${{ matrix.wrangler_config }} --check ${{ matrix.types_path }}
+
+      - name: Deploy worker
+        run: pnpm exec wrangler deploy --config ${{ matrix.wrangler_config }}
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -1,7 +1,7 @@
 import satori from "satori";
 import { SITE } from "@/config";
 import { getBlogCopy } from "@/i18n/blog";
-import loadGoogleFonts from "../loadGoogleFont";
+import loadOgFonts from "../loadOgFonts";
 
 export default async locale => {
   const copy = getBlogCopy(locale);
@@ -125,7 +125,7 @@ export default async locale => {
       width: 1200,
       height: 630,
       embedFont: true,
-      fonts: await loadGoogleFonts(
+      fonts: await loadOgFonts(
         SITE.title + copy.siteDescription + SITE.website
       ),
     }

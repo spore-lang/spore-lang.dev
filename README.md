@@ -32,21 +32,40 @@ Monorepo for the public Spore websites.
 
 ## Deployment
 
-The current deployment baseline is **static output per app**:
+The deployment baseline is now **Cloudflare Workers + Static Assets**, with one Worker per app:
 
-- `pnpm build` writes `apps/www/dist`, `apps/docs/dist`, and `apps/blog/dist`.
-- Each site can be deployed independently as static assets.
-- Today the repository fits static hosting first (for example Cloudflare Pages, or another CDN/static host).
+| App | Worker config | Custom domain | Build output |
+| --- | --- | --- | --- |
+| `apps/www` | `apps/www/wrangler.jsonc` | `spore-lang.dev` | `apps/www/dist` |
+| `apps/docs` | `apps/docs/wrangler.jsonc` | `docs.spore-lang.dev` | `apps/docs/dist` |
+| `apps/blog` | `apps/blog/wrangler.jsonc` | `blog.spore-lang.dev` | `apps/blog/dist` |
 
-Worker-specific deployment is **not wired up yet**:
+Each Worker serves its Astro build output from a Static Assets binding named `ASSETS`, and each Worker is attached as the origin for its hostname via a custom domain route.
 
-- there is no `wrangler.toml` / `wrangler.json(c)` in this repo
-- there is no `@astrojs/cloudflare` adapter configured in the Astro apps
-- there is no shared Worker entrypoint that binds the three sites behind Wrangler
+### Commands
 
-So the current repo can cooperate with Cloudflare as a **static-site deployment target**, but it is not yet a Wrangler Worker-native Astro deployment.
+- `pnpm types` - regenerate Worker binding/runtime types for all three apps.
+- `pnpm deploy:www` - build `apps/www` and deploy `spore-lang.dev`.
+- `pnpm deploy:docs` - build `apps/docs` and deploy `docs.spore-lang.dev`.
+- `pnpm deploy:blog` - build `apps/blog` and deploy `blog.spore-lang.dev`.
+- `pnpm deploy` - deploy all three Workers in sequence.
 
-One known build caveat remains in `apps/blog`: OG image generation currently reaches external font hosts during build. Before treating deployment as fully reproducible across CI and Worker-oriented pipelines, those fonts should be vendored locally.
+### CI / CD
+
+- `pnpm check`, `pnpm types`, and `pnpm build` are the validation baseline.
+- `.github/workflows/deploy-workers.yml` deploys each site as its own Worker on pushes to `main`.
+- Deployment expects `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to be configured in GitHub Actions secrets or in your local shell.
+
+### Fonts
+
+Runtime webfonts are delivered from pinned jsDelivr package URLs so the sites can reuse pre-split CDN assets instead of shipping monolithic font files from this repository:
+
+- UI: `Geist Variable` + `Source Han Sans SC VF`
+- Code: `Maple Mono Normal NF CN` + `Iosevka`
+
+For Chinese text, the current setup prefers pre-split CDN packages (especially `cn-fontsource-source-han-sans-sc-vf` and `maplemono-normal-nf-cn`) to reduce first-load font cost.
+
+`apps/blog` OG image generation no longer depends on host system fonts. It subsets vendored `Source Han Sans SC` OTF assets during build so CI and local builds render the same glyph set deterministically.
 
 ## Repository standards
 
