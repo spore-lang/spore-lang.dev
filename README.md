@@ -52,9 +52,10 @@ Each Worker serves its Astro build output from a Static Assets binding named `AS
 
 ### CI / CD
 
-- `pnpm check`, `pnpm types`, and `pnpm build` are the validation baseline.
-- `.github/workflows/deploy-workers.yml` deploys each site as its own Worker on pushes to `main`.
-- Deployment expects `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` to be configured in GitHub Actions secrets or in your local shell.
+- `pnpm types:check`, `pnpm check`, and `pnpm build` are the validation baseline.
+- `.github/workflows/cd-workers.yml` deploys each site as its own Worker on pushes to `main`.
+- If you deploy through GitHub Actions + Wrangler, configure `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as GitHub Actions secrets or in your local shell.
+- If you want a Vercel-style GitHub App flow instead, use Cloudflare Workers Builds / Git integration from the Cloudflare dashboard rather than this workflow.
 
 ### Fonts
 

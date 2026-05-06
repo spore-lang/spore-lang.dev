@@ -1,4 +1,4 @@
-name: "Deploy - Workers"
+name: "CD - Workers"
 
 on:
   push:
@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: deploy-workers-${{ github.ref }}
+  group: cd-workers-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
