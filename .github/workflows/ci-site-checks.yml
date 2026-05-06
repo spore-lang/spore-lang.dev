@@ -39,8 +39,8 @@ jobs:
       - name: Run workspace checks
         run: pnpm check
 
-      - name: Generate worker types
-        run: pnpm types
+      - name: Check worker types
+        run: pnpm types:check
 
       - name: Build workspace sites
         run: pnpm build
