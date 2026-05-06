@@ -43,7 +43,7 @@ hooks = [
   {
     id = "typos",
     args = ["--force-exclude"],
-    exclude = '^\.github/styles/'
+    exclude = '(^\.github/styles/|(^|/)worker-configuration\.d\.ts$)'
   },
 ]
 
