@@ -1,0 +1,21 @@
+:root {
+  --font-ui:
+    "Geist Variable",
+    "Source Han Sans SC VF",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  --font-code:
+    "Maple Mono Normal NF CN",
+    "Iosevka",
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Monaco,
+    Consolas,
+    "Liberation Mono",
+    monospace;
+}

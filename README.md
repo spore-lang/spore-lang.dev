@@ -22,31 +22,76 @@ Monorepo for the public Spore websites.
 - `pnpm dev:www` - start `apps/www`.
 - `pnpm dev:docs` - start `apps/docs`.
 - `pnpm dev:blog` - start `apps/blog`.
-- `pnpm check` - run Astro static checks across all apps.
+- `pnpm types` - regenerate ignored Worker binding/runtime types for all apps.
+- `pnpm check` - regenerate Worker types and run Astro static checks across all apps.
 - `pnpm check:blog` - run static checks for `apps/blog`.
 - `pnpm build` - build all sites in the workspace.
 - `pnpm build:blog` - build `apps/blog`.
-- `pnpm ci` - run the local CI command set.
+- `pnpm run ci` - run the local CI command set.
 - `pnpm pre-commit` - run all configured hooks with `prek`.
 - `pnpm pre-commit:install` - install local Git hooks.
 
 ## Deployment
 
-The current deployment baseline is **static output per app**:
+The deployment baseline is now **Cloudflare Workers + Static Assets**, with one Worker per app:
 
-- `pnpm build` writes `apps/www/dist`, `apps/docs/dist`, and `apps/blog/dist`.
-- Each site can be deployed independently as static assets.
-- Today the repository fits static hosting first (for example Cloudflare Pages, or another CDN/static host).
+| App | Worker config | Custom domain | Build output |
+| --- | --- | --- | --- |
+| `apps/www` | `apps/www/wrangler.jsonc` | `spore-lang.dev` | `apps/www/dist` |
+| `apps/docs` | `apps/docs/wrangler.jsonc` | `docs.spore-lang.dev` | `apps/docs/dist` |
+| `apps/blog` | `apps/blog/wrangler.jsonc` | `blog.spore-lang.dev` | `apps/blog/dist` |
 
-Worker-specific deployment is **not wired up yet**:
+Each Worker serves its Astro build output from a Static Assets binding named `ASSETS`, and each Worker is attached as the origin for its hostname via a custom domain route.
 
-- there is no `wrangler.toml` / `wrangler.json(c)` in this repo
-- there is no `@astrojs/cloudflare` adapter configured in the Astro apps
-- there is no shared Worker entrypoint that binds the three sites behind Wrangler
+### Commands
 
-So the current repo can cooperate with Cloudflare as a **static-site deployment target**, but it is not yet a Wrangler Worker-native Astro deployment.
+- `pnpm types` - regenerate Worker binding/runtime types for all three apps.
+- `pnpm deploy:www` - build `apps/www` and deploy `spore-lang.dev`.
+- `pnpm deploy:docs` - build `apps/docs` and deploy `docs.spore-lang.dev`.
+- `pnpm deploy:blog` - build `apps/blog` and deploy `blog.spore-lang.dev`.
+- `pnpm deploy` - deploy all three Workers in sequence.
+- `pnpm versions:www` - upload a preview version for `spore-lang.dev`.
+- `pnpm versions:docs` - upload a preview version for `docs.spore-lang.dev`.
+- `pnpm versions:blog` - upload a preview version for `blog.spore-lang.dev`.
 
-One known build caveat remains in `apps/blog`: OG image generation currently reaches external font hosts during build. Before treating deployment as fully reproducible across CI and Worker-oriented pipelines, those fonts should be vendored locally.
+### CI / CD
+
+- `pnpm check` and `pnpm build` are the validation baseline.
+- `worker-configuration.d.ts` files are generated locally and ignored by Git.
+- GitHub Actions now handles validation only; production deployment is expected to run through Cloudflare Workers Builds / Git integration.
+- Manual local deployment still works through Wrangler (`pnpm deploy:*` / `pnpm versions:*`) and uses your local `wrangler login` session or shell environment.
+
+### Cloudflare Workers Builds setup
+
+For a Vercel-style GitHub App deployment flow, connect this repository to Cloudflare from **Workers & Pages** and create one Git-connected Worker per app.
+
+| Worker | Wrangler config | Root directory | Build command | Deploy command | Non-production branch deploy command |
+| --- | --- | --- | --- | --- | --- |
+| `spore-lang-www` | `apps/www/wrangler.jsonc` | `/` | `pnpm build:www` | `pnpm exec wrangler deploy --config apps/www/wrangler.jsonc` | `pnpm exec wrangler versions upload --config apps/www/wrangler.jsonc` |
+| `spore-lang-docs` | `apps/docs/wrangler.jsonc` | `/` | `pnpm build:docs` | `pnpm exec wrangler deploy --config apps/docs/wrangler.jsonc` | `pnpm exec wrangler versions upload --config apps/docs/wrangler.jsonc` |
+| `spore-lang-blog` | `apps/blog/wrangler.jsonc` | `/` | `pnpm build:blog` | `pnpm exec wrangler deploy --config apps/blog/wrangler.jsonc` | `pnpm exec wrangler versions upload --config apps/blog/wrangler.jsonc` |
+
+Recommended Cloudflare-side settings:
+
+- Connect the same GitHub repository to all three Workers.
+- Set the production branch to `main`.
+- Enable non-production branch builds if you want preview URLs and PR feedback from Cloudflare.
+- Add build watch paths per Worker so monorepo commits only rebuild the affected site:
+  - `www`: `apps/www/**`, `package.json`, `pnpm-lock.yaml`
+  - `docs`: `apps/docs/**`, `package.json`, `pnpm-lock.yaml`
+  - `blog`: `apps/blog/**`, `package.json`, `pnpm-lock.yaml`
+- Let Workers Builds manage its own build token unless you have a reason to pin a custom token in the Cloudflare dashboard.
+
+### Fonts
+
+Runtime webfonts are delivered from pinned jsDelivr package URLs so the sites can reuse pre-split CDN assets instead of shipping monolithic font files from this repository:
+
+- UI: `Geist Variable` + `Source Han Sans SC VF`
+- Code: `Maple Mono Normal NF CN` + `Iosevka`
+
+For Chinese text, the current setup prefers pre-split CDN packages (especially `cn-fontsource-source-han-sans-sc-vf` and `maplemono-normal-nf-cn`) to reduce first-load font cost.
+
+`apps/blog` OG image generation no longer depends on host system fonts. It subsets vendored `Source Han Sans SC` OTF assets during build so CI and local builds render the same glyph set deterministically.
 
 ## Repository standards
 
