@@ -18,6 +18,10 @@
     {
       "pattern": "spore-lang.dev",
       "custom_domain": true
+    },
+    {
+      "pattern": "www.spore-lang.dev",
+      "custom_domain": true
     }
   ]
 }

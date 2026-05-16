@@ -22,11 +22,12 @@ Monorepo for the public Spore websites.
 - `pnpm dev:www` - start `apps/www`.
 - `pnpm dev:docs` - start `apps/docs`.
 - `pnpm dev:blog` - start `apps/blog`.
-- `pnpm check` - run Astro static checks across all apps.
+- `pnpm types` - regenerate ignored Worker binding/runtime types for all apps.
+- `pnpm check` - regenerate Worker types and run Astro static checks across all apps.
 - `pnpm check:blog` - run static checks for `apps/blog`.
 - `pnpm build` - build all sites in the workspace.
 - `pnpm build:blog` - build `apps/blog`.
-- `pnpm ci` - run the local CI command set.
+- `pnpm run ci` - run the local CI command set.
 - `pnpm pre-commit` - run all configured hooks with `prek`.
 - `pnpm pre-commit:install` - install local Git hooks.
 
@@ -55,7 +56,8 @@ Each Worker serves its Astro build output from a Static Assets binding named `AS
 
 ### CI / CD
 
-- `pnpm types:check`, `pnpm check`, and `pnpm build` are the validation baseline.
+- `pnpm check` and `pnpm build` are the validation baseline.
+- `worker-configuration.d.ts` files are generated locally and ignored by Git.
 - GitHub Actions now handles validation only; production deployment is expected to run through Cloudflare Workers Builds / Git integration.
 - Manual local deployment still works through Wrangler (`pnpm deploy:*` / `pnpm versions:*`) and uses your local `wrangler login` session or shell environment.
 
