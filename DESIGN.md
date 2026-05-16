@@ -1,7 +1,7 @@
 ---
 version: alpha
 name: Spore
-description: Spore is a warm, organic, developer-facing design system for spore-lang.dev. It starts from the information architecture discipline of MongoDB-style developer sites, then replaces the dark infrastructure aesthetic with the approved Spore brand-board direction: warm cream canvases, layered plant greens, rounded geometry, and a calm "grow with purpose" tone. The system should feel technical, trustworthy, collaborative, and alive. It is for a programming language website, not a retail brand and not a neon AI landing page.
+description: "Spore is a warm, organic, developer-facing design system for spore-lang.dev. It starts from the information architecture discipline of MongoDB-style developer sites, then replaces the dark infrastructure aesthetic with the approved Spore brand-board direction: warm cream canvases, layered plant greens, rounded geometry, and a calm "grow with purpose" tone. The system should feel technical, trustworthy, collaborative, and alive. It is for a programming language website, not a retail brand and not a neon AI landing page."
 
 sources:
   primary-reference: "Adapted from the MongoDB DESIGN.md structure for developer-site composition"
