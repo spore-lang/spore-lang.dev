@@ -76,10 +76,10 @@ hooks = [
 ]
 
 [[repos]]
-repo = "https://github.com/zrr1999/zendev"
-rev = "v0.0.5"
+repo = "https://github.com/zendev-lab/zendev"
+rev = "7d8bcbf6134f62b7c7eaadb763f9a0d434717c44"
 hooks = [
-  { id = "zendev-commit-msg" },
+  { id = "zendev-message-check" },
 ]
 
 [[repos]]

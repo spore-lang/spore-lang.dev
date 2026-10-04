@@ -77,9 +77,9 @@ Recommended Cloudflare-side settings:
 - Set the production branch to `main`.
 - Enable non-production branch builds if you want preview URLs and PR feedback from Cloudflare.
 - Add build watch paths per Worker so monorepo commits only rebuild the affected site:
-  - `www`: `apps/www/**`, `package.json`, `pnpm-lock.yaml`
-  - `docs`: `apps/docs/**`, `package.json`, `pnpm-lock.yaml`
-  - `blog`: `apps/blog/**`, `package.json`, `pnpm-lock.yaml`
+  - `www`: `apps/www/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`
+  - `docs`: `apps/docs/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`
+  - `blog`: `apps/blog/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`
 - Let Workers Builds manage its own build token unless you have a reason to pin a custom token in the Cloudflare dashboard.
 
 ### Fonts
