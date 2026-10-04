@@ -1,18 +1,21 @@
 import rss from "@astrojs/rss";
-import { getCollection } from "astro:content";
-import { getPath } from "@/utils/getPath";
-import getSortedPosts from "@/utils/getSortedPosts";
 import { SITE } from "@/config";
+import { getBlogCopy, localizePath, type BlogLocale } from "@/i18n/blog";
+import { getPath } from "@/utils/getPath";
+import { getPublishedPostsForLocale } from "@/utils/getLocalePosts";
+
+const ROUTE_LOCALE: BlogLocale = "en";
 
 export async function GET() {
-  const posts = await getCollection("blog");
-  const sortedPosts = getSortedPosts(posts);
+  const copy = getBlogCopy(ROUTE_LOCALE);
+  const posts = await getPublishedPostsForLocale(ROUTE_LOCALE);
+
   return rss({
     title: SITE.title,
-    description: SITE.desc,
+    description: copy.siteDescription,
     site: SITE.website,
-    items: sortedPosts.map(({ data, id, filePath }) => ({
-      link: getPath(id, filePath),
+    items: posts.map(({ data, id, filePath }) => ({
+      link: localizePath(getPath(id, filePath), ROUTE_LOCALE),
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),
