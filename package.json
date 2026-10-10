@@ -35,7 +35,7 @@
     "check:blog": "pnpm types:blog && pnpm --dir apps/blog check",
     "ci": "pnpm check && pnpm build",
     "pre-commit": "uvx prek run --all-files",
-    "pre-commit:install": "uvx prek install --install-hooks --hook-type pre-commit --hook-type commit-msg",
+    "pre-commit:install": "uvx prek install --prepare-hooks",
     "pre-commit:uninstall": "uvx prek uninstall"
   },
   "devDependencies": {
