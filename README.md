@@ -103,4 +103,4 @@ This repository follows the same baseline as sibling Spore repositories:
 
 ## Current status
 
-This bootstrap now establishes a three-app workspace for the root site, docs site, and blog site while keeping one shared quality baseline. The homepage and docs site already have independent English/Simplified Chinese behavior, and the blog app now hosts the imported `vision`, `roadmap`, and `implementation` Spore draft series under `apps/blog/src/data/blog/spore/`. Those blog drafts remain marked `draft: true`, so they stay private in production while remaining available for iterative writing in local development.
+This bootstrap now establishes a three-app workspace for the root site, docs site, and blog site while keeping one shared quality baseline. The homepage and docs site already have independent English/Simplified Chinese behavior, and the blog app now hosts the imported `vision`, `roadmap`, and `implementation` Spore draft series under `apps/blog/src/data/blog/zh/spore/`. Those blog drafts remain marked `draft: true`, so they stay private in production while remaining available for iterative writing in local development.
