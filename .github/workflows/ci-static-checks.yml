@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  merge_group:
+    branches: [main]
+    types: [checks_requested]
 
 permissions:
   contents: read
@@ -17,26 +20,12 @@ jobs:
   prek:
     name: prek
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10.33.0
-          run_install: false
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: pnpm
-
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -47,15 +36,13 @@ jobs:
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Install lychee
-        uses: taiki-e/install-action@v2
-        with:
-          tool: lychee@0.15.1
-
       - name: Run prek
         uses: j178/prek-action@v2
         with:
           prek-version: "0.5.9"
+          extra-args: --all-files
         env:
+          # Workspace CI already runs Astro checks; keep all other hooks here.
+          SKIP: pnpm-check
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ github.token }}

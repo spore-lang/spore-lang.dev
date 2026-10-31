@@ -1,4 +1,4 @@
-name: "CI - PR Checks"
+name: "Policy - PR Checks"
 
 on:
   pull_request:
@@ -17,6 +17,7 @@ jobs:
   title:
     name: PR title
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
 
@@ -28,6 +29,7 @@ jobs:
   body:
     name: PR body
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6
 

@@ -56,7 +56,11 @@ Each Worker serves its Astro build output from a Static Assets binding named `AS
 
 ### CI / CD
 
-- `pnpm check` and `pnpm build` are the validation baseline.
+- `pnpm check` and `pnpm build` run once in workspace CI. Static CI runs the remaining local hooks, including Lychee, skipping only `pnpm-check`.
+- CI runs on pushes to `main`, PRs targeting `main`, and merge groups targeting `main`. The PR branch filter applies to the event's base branch.
+- Link checks run through the existing Lychee hook in both static CI and local `prek`, with the same pinned hook version, file selection and exclusions. CI and local commands pin prek to `0.5.9`.
+- PR title and body validation runs as policy on PR updates, including edits, targeting `main`.
+- Workflow prefixes describe triggers: `ci-` for push/PR/merge-group validation, `ce-` for scheduled/manual evaluation, `cd-` for delivery, and `policy-`/`automation-` for their event-driven tasks. No coverage or Sonar job is configured in this repository.
 - `worker-configuration.d.ts` files are generated locally and ignored by Git.
 - GitHub Actions now handles validation only; production deployment is expected to run through Cloudflare Workers Builds / Git integration.
 - Manual local deployment still works through Wrangler (`pnpm deploy:*` / `pnpm versions:*`) and uses your local `wrangler login` session or shell environment.
