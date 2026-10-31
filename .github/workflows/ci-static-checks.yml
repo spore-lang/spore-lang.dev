@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
 
 permissions:
   contents: read
@@ -53,6 +54,8 @@ jobs:
 
       - name: Run prek
         uses: j178/prek-action@v2
+        with:
+          prek-version: "0.5.9"
         env:
           GITHUB_BASE_REF: ${{ github.base_ref }}
           GITHUB_TOKEN: ${{ github.token }}
