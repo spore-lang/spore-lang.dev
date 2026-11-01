@@ -56,7 +56,11 @@ Each Worker serves its Astro build output from a Static Assets binding named `AS
 
 ### CI / CD
 
-- `pnpm check` and `pnpm build` are the validation baseline.
+- `pnpm check` and `pnpm build` run once in workspace CI. Static CI runs the remaining local hooks, including Lychee, skipping only `pnpm-check`.
+- CI runs on pushes to `main`, PRs targeting `main`, and merge groups targeting `main`. The PR branch filter applies to the event's base branch.
+- Link checks run through the existing Lychee hook in both static CI and local `prek`, with the same pinned hook version, file selection and exclusions. CI and local commands pin prek to `0.5.9`.
+- PR title and body validation runs as policy on PR updates, including edits, targeting `main`.
+- Workflow prefixes describe triggers: `ci-` for push/PR/merge-group validation, `ce-` for scheduled/manual evaluation, `cd-` for delivery, and `policy-`/`automation-` for their event-driven tasks. No coverage or Sonar job is configured in this repository.
 - `worker-configuration.d.ts` files are generated locally and ignored by Git.
 - GitHub Actions now handles validation only; production deployment is expected to run through Cloudflare Workers Builds / Git integration.
 - Manual local deployment still works through Wrangler (`pnpm deploy:*` / `pnpm versions:*`) and uses your local `wrangler login` session or shell environment.
@@ -77,9 +81,9 @@ Recommended Cloudflare-side settings:
 - Set the production branch to `main`.
 - Enable non-production branch builds if you want preview URLs and PR feedback from Cloudflare.
 - Add build watch paths per Worker so monorepo commits only rebuild the affected site:
-  - `www`: `apps/www/**`, `package.json`, `pnpm-lock.yaml`
-  - `docs`: `apps/docs/**`, `package.json`, `pnpm-lock.yaml`
-  - `blog`: `apps/blog/**`, `package.json`, `pnpm-lock.yaml`
+  - `www`: `apps/www/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`
+  - `docs`: `apps/docs/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`
+  - `blog`: `apps/blog/**`, `package.json`, `pnpm-lock.yaml`, `pnpm-workspace.yaml`
 - Let Workers Builds manage its own build token unless you have a reason to pin a custom token in the Cloudflare dashboard.
 
 ### Fonts
@@ -103,4 +107,4 @@ This repository follows the same baseline as sibling Spore repositories:
 
 ## Current status
 
-This bootstrap now establishes a three-app workspace for the root site, docs site, and blog site while keeping one shared quality baseline. The homepage and docs site already have independent English/Simplified Chinese behavior, and the blog app now hosts the imported `vision`, `roadmap`, and `implementation` Spore draft series under `apps/blog/src/data/blog/spore/`. Those blog drafts remain marked `draft: true`, so they stay private in production while remaining available for iterative writing in local development.
+This bootstrap now establishes a three-app workspace for the root site, docs site, and blog site while keeping one shared quality baseline. The homepage and docs site already have independent English/Simplified Chinese behavior, and the blog app now hosts the imported `vision`, `roadmap`, and `implementation` Spore draft series under `apps/blog/src/data/blog/zh/spore/`. Those blog drafts remain marked `draft: true`, so they stay private in production while remaining available for iterative writing in local development.

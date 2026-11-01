@@ -4,9 +4,13 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import LinkButton from "@/components/LinkButton.astro";
 import { SITE } from "@/config";
+import { getBlogCopy, getBlogLocaleFromPathname, localizePath } from "@/i18n/blog";
+
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
 ---
 
-<Layout title={`页面未找到 | ${SITE.title}`}>
+<Layout title={`${copy.notFound} | ${SITE.title}`}>
   <Header />
 
   <main
@@ -16,12 +20,12 @@ import { SITE } from "@/config";
       <div class="mb-14 flex flex-col items-center justify-center">
         <h1 class="text-9xl font-bold text-accent">404</h1>
         <span aria-hidden="true">¯\_(ツ)_/¯</span>
-        <p class="mt-4 text-2xl sm:text-3xl">页面未找到</p>
+        <p class="mt-4 text-2xl sm:text-3xl">{copy.notFound}</p>
         <LinkButton
-          href="/"
+          href={localizePath("/", locale)}
           class="my-6 text-lg underline decoration-dashed underline-offset-8"
         >
-          返回首页
+          {copy.backHome}
         </LinkButton>
       </div>
   </main>

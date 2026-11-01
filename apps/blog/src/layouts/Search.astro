@@ -1,0 +1,136 @@
+---
+import "@pagefind/default-ui/css/ui.css";
+import Main from "@/layouts/Main.astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/config";
+import {
+  getBlogCopy,
+  getBlogLocaleFromPathname,
+  localizePath,
+} from "@/i18n/blog";
+
+const locale = getBlogLocaleFromPathname(Astro.url.pathname);
+const copy = getBlogCopy(locale);
+const backUrl = SITE.showBackButton ? `${Astro.url.pathname}` : localizePath("/", locale);
+---
+
+<Layout title={`${copy.search} | ${SITE.title}`}>
+  <Header />
+  <Main pageTitle={copy.search} pageDesc={copy.searchDescription}>
+    {
+      import.meta.env.DEV && (
+        <div class="mb-4 space-y-4 rounded bg-muted/75 p-4">
+          <p>{copy.searchDevMode}</p>
+          <code class="block rounded bg-black px-2 py-1 text-white">pnpm build</code>
+        </div>
+      )
+    }
+    <blog-search class="block" data-backurl={backUrl}>
+      <div id="pagefind-search"></div>
+    </blog-search>
+  </Main>
+  <Footer />
+</Layout>
+
+<script>
+  // @ts-expect-error — Missing types for @pagefind/default-ui package.
+  import { PagefindUI } from "@pagefind/default-ui";
+
+  class BlogSearch extends HTMLElement {
+    private search?: { destroy(): void };
+
+    connectedCallback() {
+      const searchElement = this.querySelector<HTMLElement>("#pagefind-search")!;
+      const updateQuery = (term: string) => {
+        if (!this.isConnected) return term;
+
+        const url = new URL(window.location.href);
+        if (term.trim()) url.searchParams.set("q", term);
+        else url.searchParams.delete("q");
+        history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+
+        const backUrl = new URL(this.dataset.backurl!, url.origin);
+        backUrl.search = url.search;
+        backUrl.hash = url.hash;
+        sessionStorage.setItem("backUrl", backUrl.pathname + backUrl.search + backUrl.hash);
+        return term;
+      };
+
+      const search = new PagefindUI({
+        element: searchElement,
+        showImages: false,
+        showSubResults: true,
+        processTerm: updateQuery,
+      });
+      this.search = search;
+
+      const query = new URLSearchParams(window.location.search).get("q");
+      if (query) search.triggerSearch(query);
+
+      const input = searchElement.querySelector<HTMLInputElement>(".pagefind-ui__search-input");
+      input?.addEventListener("input", () => {
+        if (!input.value.trim()) updateQuery("");
+      });
+      searchElement.querySelector(".pagefind-ui__search-clear")?.addEventListener("click", () => updateQuery(""));
+    }
+
+    disconnectedCallback() {
+      this.search?.destroy();
+    }
+  }
+
+  customElements.define("blog-search", BlogSearch);
+</script>
+
+<style is:global>
+  #pagefind-search {
+    --pagefind-ui-font: var(--font-app);
+    --pagefind-ui-text: var(--foreground);
+    --pagefind-ui-background: var(--background);
+    --pagefind-ui-border: var(--border);
+    --pagefind-ui-primary: var(--accent);
+    --pagefind-ui-tag: var(--background);
+    --pagefind-ui-border-radius: 0.375rem;
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-image-border-radius: 8px;
+    --pagefind-ui-image-box-ratio: 3 / 2;
+
+    form::before {
+      background-color: var(--foreground);
+    }
+
+    input {
+      font-weight: 400;
+      border: 1px solid var(--border);
+    }
+
+    input:focus-visible {
+      outline: 1px solid var(--accent);
+    }
+
+    .pagefind-ui__result-title a {
+      color: var(--accent);
+      outline-offset: 1px;
+      outline-color: var(--accent);
+      text-decoration-style: dashed;
+      text-underline-offset: 4px;
+    }
+
+    .pagefind-ui__result-title a:focus-visible,
+    .pagefind-ui__search-clear:focus-visible {
+      text-decoration-line: none;
+      outline-width: 2px;
+      outline-style: dashed;
+    }
+
+    .pagefind-ui__result:last-of-type {
+      border-bottom: 0;
+    }
+
+    .pagefind-ui__result-nested .pagefind-ui__result-link:before {
+      font-family: system-ui;
+    }
+  }
+</style>
